@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:outlet_insight/pages/OutlatePage.dart';
+import 'package:outlet_insight/pages/OutletPage.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -94,7 +94,7 @@ class LoginPage extends StatelessWidget {
                     // Add your onPressed callback here
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OutlatePage()),
+                      MaterialPageRoute(builder: (context) => OutletPage()),
                     );
                   },
                 ),

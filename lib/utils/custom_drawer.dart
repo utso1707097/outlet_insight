@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:outlet_insight/pages/login_page.dart';
 
-import '../pages/OutlatePage.dart';
+import '../pages/OutletPage.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => OutlatePage()),
+                MaterialPageRoute(builder: (context) => OutletPage()),
               );
             },
           ),
