@@ -89,9 +89,7 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
           await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
-        setState(() {
-          _imageFile = XFile(pickedFile.path);
-        });
+        _imageFile = XFile(pickedFile.path);
       }
     } catch (e) {
       log('Error picking image: $e');
@@ -204,7 +202,10 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
           children: [
             IconButton(
               icon: const Icon(Icons.photo, color: Colors.white),
-              onPressed: _pickImageFromGallery,
+              onPressed: () async {
+                await _pickImageFromGallery();
+                setState(() {});
+              },
             ),
             IconButton(
               icon: const Icon(
