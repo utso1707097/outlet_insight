@@ -7,16 +7,19 @@ import 'package:outlet_insight/pages/camera_page.dart';
 class ImageSelector extends StatelessWidget {
   final IconData icon;
   final String hintText;
+  final String cameraType;
+  final DashboardController controller;
 
   const ImageSelector({
     Key? key,
     required this.icon,
     required this.hintText,
+    required this.cameraType,
+    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DashboardController controller = new DashboardController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,7 +28,7 @@ class ImageSelector extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CameraPageWithGallery(controller: controller)),
+              MaterialPageRoute(builder: (context) => CameraPageWithGallery(controller: controller,cameraType:cameraType)),
             );
           },
           child: Container(

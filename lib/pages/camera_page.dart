@@ -7,12 +7,12 @@ import 'dart:convert';
 import '../controllers/dashboard_controller.dart';
 import 'package:path/path.dart' as path;
 
-// import 'controller/update_profile_controller.dart';
 
 class CameraPageWithGallery extends StatefulWidget {
   // final EmployeeUpdateController controller;
   final DashboardController controller;
-  CameraPageWithGallery({required this.controller});
+  final String cameraType;
+  const CameraPageWithGallery({super.key, required this.controller,required this.cameraType});
 
   @override
   _CameraPageWithGalleryState createState() => _CameraPageWithGalleryState();
@@ -143,7 +143,18 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                                 print(base64Image);
                                 print('Image confirmed!');
                                 Navigator.pop(context, base64Image);
-                                widget.controller.setInteriorBase64Image(base64Image);
+                                print("That is: ${base64Image}");
+                                print("That is: ${widget.cameraType}");
+                                if (widget.cameraType == 'interior') {
+                                  widget.controller.setInteriorBase64Image(base64Image);
+                                  print("interiour image saved successfully!");
+                                } else if (widget.cameraType == 'exterior') {
+                                  widget.controller.setExteriorBase64Image(base64Image);
+                                } else if (widget.cameraType == 'front') {
+                                  widget.controller.setFrontBase64Image(base64Image);
+                                } else if (widget.cameraType == 'back') {
+                                  widget.controller.setBackBase64Image(base64Image);
+                                }
                                 setState(() {
                                   _imageFile = XFile('');
                                 });

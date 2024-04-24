@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:outlet_insight/pages/questionaire_page.dart';
 import 'package:outlet_insight/utils/custom_drawer.dart';
 
+import '../controllers/dashboard_controller.dart';
 import '../utils/custom_input_filed.dart';
 import '../utils/image_selector.dart';
 
@@ -11,6 +13,8 @@ class OutlatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DashboardController controller =
+    Get.put(DashboardController());
     return Scaffold(
       backgroundColor: const Color(0xffC7F5F5),
       appBar: AppBar(
@@ -55,21 +59,30 @@ class OutlatePage extends StatelessWidget {
               ImageSelector(
                 icon: Icons.photo,
                 hintText: 'Select outlet interior image',
+                cameraType: 'interior',
+                controller: controller,
               ),
               //SizedBox(height: 10.h),
               ImageSelector(
                 icon: Icons.photo,
                 hintText: 'Select outlet exterior image',
+                cameraType: 'exterior',
+                controller: controller,
+
               ),
               //SizedBox(height: 10.h),
               ImageSelector(
                 icon: Icons.photo,
                 hintText: 'Select outlet front image',
+                cameraType: 'front',
+                controller: controller,
               ),
               //SizedBox(height: 10.h),
               ImageSelector(
                 icon: Icons.photo,
                 hintText: 'Select outlet back image',
+                cameraType: 'back',
+                controller: controller,
               ),
               SizedBox(height: 10.h),
               Container(
@@ -86,6 +99,10 @@ class OutlatePage extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.check, color: Colors.white, size: 40.h),
                   onPressed: () {
+                    print(controller.interiorBase64Image.value);
+                    print(controller.exteriorBase64Image.value);
+                    print(controller.frontBase64Image.value);
+                    print(controller.backBase64Image.value);
                     // Add your onPressed callback here
                     // Navigator.push(
                     //   context,
