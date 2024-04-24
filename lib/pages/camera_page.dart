@@ -113,8 +113,7 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (_cameraController.value.isInitialized) {
-              return _imageFile.path.isNotEmpty
+            return _imageFile.path.isNotEmpty
                   ? Stack(
                       children: [
                         Align(
@@ -189,9 +188,6 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                       height: MediaQuery.of(context).size.height,
                       width: double.maxFinite,
                       child: CameraPreview(_cameraController));
-            } else {
-              return const Center(child: Text("Camera not initialized"));
-            }
           } else {
             return const Center(child: CircularProgressIndicator());
           }
