@@ -1,21 +1,23 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'dart:convert';
 import '../controllers/dashboard_controller.dart';
-import 'package:path/path.dart' as path;
-
+import 'package:image_editor/image_editor.dart' as editor;
 
 class CameraPageWithGallery extends StatefulWidget {
   // final EmployeeUpdateController controller;
   final DashboardController controller;
   final String cameraType;
-  const CameraPageWithGallery({super.key, required this.controller,required this.cameraType});
+  const CameraPageWithGallery(
+      {super.key, required this.controller, required this.cameraType});
 
   @override
-  _CameraPageWithGalleryState createState() => _CameraPageWithGalleryState();
+  State<CameraPageWithGallery> createState() => _CameraPageWithGalleryState();
 }
 
 class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
@@ -27,8 +29,8 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
-    _imageFile = XFile(''); // Initialize with a default or null value
+    _initializeControllerFuture = _initializeCamera();
+    _imageFile = XFile('');
   }
 
   Future<void> _initializeCamera() async {
@@ -37,53 +39,54 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
       _isFrontCamera ? cameras[1] : cameras[0],
       ResolutionPreset.high,
     );
-    _initializeControllerFuture = _cameraController.initialize();
-    if (!mounted) return;
-    setState(() {});
+    return _cameraController.initialize();
   }
 
   Future<void> _toggleCamera() async {
-    setState(() {
-      _isFrontCamera = !_isFrontCamera;
-    });
+    _isFrontCamera = !_isFrontCamera;
     await _initializeCamera();
   }
 
   Future<void> _takePicture() async {
     try {
-      await _initializeControllerFuture;
-      final XFile image = await _cameraController.takePicture();
-
-// Use image package to handle orientation
-      final img.Image capturedImage = img.decodeImage(await File(image.path)
-          .readAsBytes())!; // Use ! to assert non-nullability
-
-// Check if the image needs to be mirrored based on camera sensor orientation
-      bool mirrorImage = _cameraController.description?.sensorOrientation == 90;
-
-// Apply orientation and mirror adjustments
-      final img.Image orientedImage = img.copyRotate(capturedImage, angle: 180);
-      img.flipVertical(orientedImage);
-      if (mirrorImage) {
-        // Mirror the image horizontally
-        img.flipHorizontal(orientedImage);
+      final XFile? image;
+      // await _initializeControllerFuture;
+      if (_cameraController.value.isInitialized &&
+          !_cameraController.value.isTakingPicture) {
+        image = await _cameraController.takePicture();
+        await flipPhoto(image.path);
       }
-
-// Save the oriented image
-      await File(image.path).writeAsBytes(img.encodeJpg(orientedImage));
-
-// Update _imageFile to point to the same file
-      setState(() {
-        _imageFile = XFile(image.path);
-      });
     } catch (e) {
-      print('Error taking picture: $e');
+      log('Error taking picture: $e');
     }
+  }
+
+  Future<void> flipPhoto(String imagePath) async {
+    var photofile = File(imagePath);
+    Uint8List imageBytes = await photofile.readAsBytes();
+
+    final editor.ImageEditorOption option = editor.ImageEditorOption();
+    option.addOption(
+      editor.FlipOption(
+        horizontal: _cameraController.value.description.lensDirection ==
+                CameraLensDirection.back
+            ? false
+            : true,
+      ),
+    );
+    imageBytes = (await editor.ImageEditor.editImage(
+      image: imageBytes,
+      imageEditorOption: option,
+    ))!;
+    await photofile.delete();
+    await photofile.writeAsBytes(imageBytes);
+    _imageFile = XFile(photofile.path);
   }
 
   Future<void> _pickImageFromGallery() async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         setState(() {
@@ -91,7 +94,7 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
         });
       }
     } catch (e) {
-      print('Error picking image: $e');
+      log('Error picking image: $e');
     }
   }
 
@@ -111,21 +114,17 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (_cameraController.value.isInitialized) {
-              return Container(
+              return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    CameraPreview(_cameraController),
-                    if (_imageFile != null && _imageFile.path.isNotEmpty)
-                      Container(
+                child: _imageFile.path.isNotEmpty
+                    ? Container(
                         height: MediaQuery.of(context).size.height,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: FileImage(File(_imageFile.path)),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                         child: Row(
@@ -138,22 +137,29 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                                 size: 60.0,
                               ),
                               onPressed: () async {
-                                List<int> imageBytes = await File(_imageFile.path).readAsBytes();
+                                List<int> imageBytes =
+                                    await File(_imageFile.path).readAsBytes();
                                 String base64Image = base64Encode(imageBytes);
-                                print(base64Image);
-                                print('Image confirmed!');
-                                Navigator.pop(context, base64Image);
-                                print("That is: ${base64Image}");
-                                print("That is: ${widget.cameraType}");
+                                log(base64Image);
+                                log('Image confirmed!');
+                                if (mounted) {
+                                  Navigator.pop(context, base64Image);
+                                }
+                                log("That is: $base64Image");
+                                log("That is: ${widget.cameraType}");
                                 if (widget.cameraType == 'interior') {
-                                  widget.controller.setInteriorBase64Image(base64Image);
-                                  print("interiour image saved successfully!");
+                                  widget.controller
+                                      .setInteriorBase64Image(base64Image);
+                                  log("interiour image saved successfully!");
                                 } else if (widget.cameraType == 'exterior') {
-                                  widget.controller.setExteriorBase64Image(base64Image);
+                                  widget.controller
+                                      .setExteriorBase64Image(base64Image);
                                 } else if (widget.cameraType == 'front') {
-                                  widget.controller.setFrontBase64Image(base64Image);
+                                  widget.controller
+                                      .setFrontBase64Image(base64Image);
                                 } else if (widget.cameraType == 'back') {
-                                  widget.controller.setBackBase64Image(base64Image);
+                                  widget.controller
+                                      .setBackBase64Image(base64Image);
                                 }
                                 setState(() {
                                   _imageFile = XFile('');
@@ -166,10 +172,10 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                                 color: Colors.red,
                                 // Change the color to light green
                                 size:
-                                60.0, // Change the size to 36.0 or any other desired size
+                                    60.0, // Change the size to 36.0 or any other desired size
                               ),
                               onPressed: () {
-                                print('Image discarded!');
+                                log('Image discarded!');
                                 //Navigator.of(context).pop(); // Close the dialog
                                 setState(() {
                                   _imageFile = XFile('');
@@ -178,9 +184,8 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                             ),
                           ],
                         ),
-                      ),
-                  ],
-                ),
+                      )
+                    : CameraPreview(_cameraController),
               );
             } else {
               return const Center(child: Text("Camera not initialized"));
@@ -190,7 +195,6 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
           }
         },
       ),
-
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xff1a1a1a),
         shape: const CircularNotchedRectangle(),
@@ -207,11 +211,17 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
                 Icons.camera,
                 color: Colors.white,
               ),
-              onPressed: _takePicture,
+              onPressed: () async {
+                await _takePicture();
+                setState(() {});
+              },
             ),
             IconButton(
               icon: const Icon(Icons.switch_camera, color: Colors.white),
-              onPressed: _toggleCamera,
+              onPressed: () async {
+                await _toggleCamera();
+                setState(() {});
+              },
             ),
           ],
         ),
