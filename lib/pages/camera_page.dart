@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'dart:convert';
@@ -112,79 +114,81 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (_cameraController.value.isInitialized) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                child: _imageFile.path.isNotEmpty
-                    ? Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: FileImage(File(_imageFile.path)),
-                            fit: BoxFit.fill,
+              return _imageFile.path.isNotEmpty
+                  ? Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.file(
+                            File(_imageFile.path),
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.check,
-                                color: Colors.green,
-                                size: 60.0,
+                        Align(
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.check,
+                                  color: Colors.green,
+                                  size: 60.0,
+                                ),
+                                onPressed: () async {
+                                  List<int> imageBytes =
+                                      await File(_imageFile.path).readAsBytes();
+                                  String base64Image = base64Encode(imageBytes);
+                                  log(base64Image);
+                                  log('Image confirmed!');
+                                  if (mounted) {
+                                    Navigator.pop(context, base64Image);
+                                  }
+                                  log("That is: $base64Image");
+                                  log("That is: ${widget.cameraType}");
+                                  if (widget.cameraType == 'interior') {
+                                    widget.controller
+                                        .setInteriorBase64Image(base64Image);
+                                    log("interiour image saved successfully!");
+                                  } else if (widget.cameraType == 'exterior') {
+                                    widget.controller
+                                        .setExteriorBase64Image(base64Image);
+                                  } else if (widget.cameraType == 'front') {
+                                    widget.controller
+                                        .setFrontBase64Image(base64Image);
+                                  } else if (widget.cameraType == 'back') {
+                                    widget.controller
+                                        .setBackBase64Image(base64Image);
+                                  }
+                                  setState(() {
+                                    _imageFile = XFile('');
+                                  });
+                                },
                               ),
-                              onPressed: () async {
-                                List<int> imageBytes =
-                                    await File(_imageFile.path).readAsBytes();
-                                String base64Image = base64Encode(imageBytes);
-                                log(base64Image);
-                                log('Image confirmed!');
-                                if (mounted) {
-                                  Navigator.pop(context, base64Image);
-                                }
-                                log("That is: $base64Image");
-                                log("That is: ${widget.cameraType}");
-                                if (widget.cameraType == 'interior') {
-                                  widget.controller
-                                      .setInteriorBase64Image(base64Image);
-                                  log("interiour image saved successfully!");
-                                } else if (widget.cameraType == 'exterior') {
-                                  widget.controller
-                                      .setExteriorBase64Image(base64Image);
-                                } else if (widget.cameraType == 'front') {
-                                  widget.controller
-                                      .setFrontBase64Image(base64Image);
-                                } else if (widget.cameraType == 'back') {
-                                  widget.controller
-                                      .setBackBase64Image(base64Image);
-                                }
-                                setState(() {
-                                  _imageFile = XFile('');
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.clear,
-                                color: Colors.red,
-                                // Change the color to light green
-                                size:
-                                    60.0, // Change the size to 36.0 or any other desired size
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.red,
+                                  // Change the color to light green
+                                  size:
+                                      60.0, // Change the size to 36.0 or any other desired size
+                                ),
+                                onPressed: () {
+                                  log('Image discarded!');
+                                  //Navigator.of(context).pop(); // Close the dialog
+                                  setState(() {
+                                    _imageFile = XFile('');
+                                  });
+                                },
                               ),
-                              onPressed: () {
-                                log('Image discarded!');
-                                //Navigator.of(context).pop(); // Close the dialog
-                                setState(() {
-                                  _imageFile = XFile('');
-                                });
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      )
-                    : CameraPreview(_cameraController),
-              );
+                      ],
+                    )
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: double.maxFinite,
+                      child: CameraPreview(_cameraController));
             } else {
               return const Center(child: Text("Camera not initialized"));
             }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:outlet_insight/controllers/dashboard_controller.dart';
+import 'package:outlet_insight/pages/camera_page.dart';
 import 'package:outlet_insight/pages/login_page.dart';
 
 void main() {
@@ -35,9 +37,13 @@ class MyHomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,designSize: const Size(360, 800),);
-    return const LoginPage();
+    ScreenUtil.init(
+      context,
+      designSize: const Size(360, 800),
+    );
+    return CameraPageWithGallery(
+      cameraType: "",
+      controller: DashboardController(),
+    );
   }
 }
-
-
