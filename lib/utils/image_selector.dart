@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:outlet_insight/controllers/dashboard_controller.dart';
 import 'package:outlet_insight/pages/camera_page.dart';
 
@@ -48,60 +51,89 @@ class ImageSelector extends StatelessWidget {
               ],
             ),
             child: Stack(
-              children: [
-                // Image
-                Positioned.fill(
-                  child: Center(
-                    child: ShaderMask(
-                      shaderCallback: (bounds) {
-                        return LinearGradient(
+                children: [
+                  // Image
+                  if (cameraType == 'interior' && controller.interiorBase64Image.value != "")
+                    Positioned.fill(
+                      child: Image(
+                        image: MemoryImage(base64Decode(controller.interiorBase64Image.value)),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else if(cameraType == 'exterior' && controller.exteriorBase64Image.value != "")
+                    Positioned.fill(
+                      child: Image(
+                        image: MemoryImage(base64Decode(controller.exteriorBase64Image.value)),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  else if(cameraType == 'front' && controller.frontBase64Image.value != "")
+                      Positioned.fill(
+                        child: Image(
+                          image: MemoryImage(base64Decode(controller.frontBase64Image.value)),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    else if(cameraType == 'back' && controller.backBase64Image.value != "")
+                        Positioned.fill(
+                          child: Image(
+                            image: MemoryImage(base64Decode(controller.backBase64Image.value)),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                  else
+                    Positioned.fill(
+                      child: Center(
+                        child: ShaderMask(
+                          shaderCallback: (bounds) {
+                            return LinearGradient(
+                              colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ).createShader(bounds);
+                          },
+                          child: Icon(Icons.image, color: Colors.white, size: 100.sp),
+                        ),
+                      ),
+                    ),
+                  // Camera Icon at Bottom Right Corner
+                  Positioned(
+                    bottom: 10.h,
+                    right: 10.w,
+                    child: Icon(Icons.camera_alt, color:Color(0xff008DDF), size: 30.sp),
+                  ),
+                  // Title Section
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
                           colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                        ).createShader(bounds);
-                      },
-                      child: Icon(Icons.image, color: Colors.white, size: 100.sp),
-                    ),
-                  ),
-                ),
-                // Camera Icon at Bottom Right Corner
-                Positioned(
-                  bottom: 10.h,
-                  right: 10.w,
-                  child: Icon(Icons.camera_alt, color:Color(0xff008DDF), size: 30.sp),
-                ),
-                // Title Section
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(12.w),
+                          topLeft: Radius.circular(12.w),
+                        ),
                       ),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12.w),
-                        topLeft: Radius.circular(12.w),
-                      ),
-                    ),
-                    padding: EdgeInsets.all(12.w),
-                    child: Center(
-                      child: Text(
-                        hintText,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                      padding: EdgeInsets.all(12.w),
+                      child: Center(
+                        child: Text(
+                          hintText,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ),
         ),
         // Text Field

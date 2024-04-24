@@ -25,7 +25,7 @@ class OutletPage extends StatelessWidget {
           "Retail Partner Assessment Survey",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20.h,
+            fontSize: 16.h,
           ),
         ),
       ),
@@ -164,7 +164,7 @@ class OutletPage extends StatelessWidget {
                   controller: controller,
                   fieldName: "cctv_availability"
               ),
-          
+
               // If yes, where is the monitor placed
               SizedBox(height: 12.h),
               MultiSelectDropdownField(

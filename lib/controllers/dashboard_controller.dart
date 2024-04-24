@@ -23,22 +23,26 @@ class DashboardController extends GetxController {
   // Method to set interior base64 image
   void setInteriorBase64Image(String value) {
     interiorBase64Image.value = value;
+    update();
     print("Image saved as : ${interiorBase64Image.value}");
   }
 
   // Method to set exterior base64 image
   void setExteriorBase64Image(String value) {
     exteriorBase64Image.value = value;
+    update();
   }
 
   // Method to set front base64 image
   void setFrontBase64Image(String value) {
     frontBase64Image.value = value;
+    update();
   }
 
   // Method to set back base64 image
   void setBackBase64Image(String value) {
     backBase64Image.value = value;
+    update();
   }
 
   // Method to upload images and details
