@@ -45,6 +45,7 @@ class CustomInputField extends StatelessWidget {
               // Update the fieldVar in the DashboardController
               fieldVar.value = text;
             },
+            initialValue: fieldVar.value.isEmpty ? null : fieldVar.value,
             keyboardType: inputType,
             cursorColor: Colors.black,
             decoration: InputDecoration(
