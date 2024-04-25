@@ -13,13 +13,11 @@ import '../utils/custom_input_filed.dart';
 import '../utils/image_selector.dart';
 
 class OutletPage extends StatelessWidget {
-  const OutletPage({Key? key}) : super(key: key);
-
+  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  final DashboardController controller = Get.put(DashboardController());
   @override
   Widget build(BuildContext context) {
     print("rebuilding");
-    final DashboardController controller =
-    Get.put(DashboardController());
     return Scaffold(
       backgroundColor: const Color(0xffC7F5F5),
       appBar: AppBar(
@@ -28,7 +26,7 @@ class OutletPage extends StatelessWidget {
           "Retail Partner Assessment Survey",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16.h,
+            fontSize: 16.sp,
           ),
         ),
       ),
@@ -42,7 +40,7 @@ class OutletPage extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Form(
-              key: controller.globalFormKey,
+              key: globalFormKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -59,7 +57,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Respondent's relationship with retail",
                       items: ["owner","employee","other"],
                       controller: controller,
-                      fieldName: "relation"
+                      fieldVar: controller.relationshipWithRetail,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -95,7 +93,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Partnership or single owner",
                       items: ["Single owner","Partnership"],
                       controller: controller,
-                      fieldName: "ownership"
+                      fieldVar: controller.ownershipType,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -145,7 +143,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Who\'s bkash number shall be used to transfer incentives",
                       items: ["Owner’sr","Point of contact"],
                       controller: controller,
-                      fieldName: "ownership"
+                      fieldVar: controller.whoseBkash,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -153,7 +151,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Trade license's availability",
                       items: ["Yes","No"],
                       controller: controller,
-                      fieldName: "trade"
+                      fieldVar: controller.tradeAvailability,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -168,7 +166,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Weekly off days",
                       items: ["Saturday", "Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
                       controller: controller,
-                      fieldName: "holidays",
+                      fieldVar: controller.selectedHolidays,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -185,14 +183,14 @@ class OutletPage extends StatelessWidget {
                     inputType: TextInputType.datetime,
                   ),
                   SizedBox(height: 12.h),
-                  TopBrandsInputField(),
+                  TopBrandsInputField(controller:controller),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
                       icon: Icons.router,
                       hintText: "Internet hardware availability on premise",
                       items: ["Yes","No"],
                       controller: controller,
-                      fieldName: "internet_availability"
+                      fieldVar: controller.internetAvailability,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -200,7 +198,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "CCTV availability on premise",
                       items: ["Yes","No"],
                       controller: controller,
-                      fieldName: "cctv_availability"
+                      fieldVar: controller.cctvAvailability,
                   ),
 
                   // If yes, where is the monitor placed
@@ -220,7 +218,7 @@ class OutletPage extends StatelessWidget {
                         "Other (Please specify...)"
                       ],
                       controller: controller,
-                      fieldName: "Camera_placement"
+                      fieldVar: controller.selectedCameraPlacementOptions,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -228,7 +226,7 @@ class OutletPage extends StatelessWidget {
                       hintText: "Is it going to be placed at any corner?",
                       items: ["yes","no"],
                       controller: controller,
-                      fieldName: "cctv_placement",
+                      fieldVar: controller.cctvPlacement,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -236,7 +234,7 @@ class OutletPage extends StatelessWidget {
                     hintText: "Will the display be placed at eye level?",
                     items: ["yes","no"],
                     controller: controller,
-                    fieldName: "cctv_eye_level",
+                    fieldVar: controller.cctvEyeLevel,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -244,7 +242,7 @@ class OutletPage extends StatelessWidget {
                     hintText: "Is the retailer happy with the incentive amount offered?",
                     items: ["yes","no"],
                     controller: controller,
-                    fieldName: "intersive_happiness",
+                    fieldVar: controller.incentive_happiness,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -280,7 +278,7 @@ class OutletPage extends StatelessWidget {
                     hintText: "Retail category",
                     items: ["A","B","C"],
                     controller: controller,
-                    fieldName: "retail_category",
+                    fieldVar: controller.retailCategory,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -288,7 +286,7 @@ class OutletPage extends StatelessWidget {
                     hintText: "Retail category",
                     items: ["Grocery Shop","Departmental Store","other"],
                     controller: controller,
-                    fieldName: "Retail type",
+                    fieldVar: controller.retailType,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -296,7 +294,7 @@ class OutletPage extends StatelessWidget {
                     hintText: "Premises",
                     items: ["Wet Market","Market 3","Standalone"],
                     controller: controller,
-                    fieldName: "Premises",
+                    fieldVar: controller.premises,
                   ),
                   SizedBox(height: 10.h),
                   ImageSelector(
@@ -371,12 +369,31 @@ class OutletPage extends StatelessWidget {
       "largestIncentive: ${controller.largestIncentive.value}",
       "client: ${controller.client.value}",
       "averageDailySales: ${controller.averageDailySales.value}",
+      "relationshipWithRetail: ${controller.relationshipWithRetail.value}",
+      "ownershipType: ${controller.ownershipType.value}",
+      "tradeAvailability: ${controller.tradeAvailability.value}",
+      "whoseBkash: ${controller.whoseBkash.value}",
+      "internetAvailability: ${controller.internetAvailability.value}",
+      "cctvAvailability: ${controller.cctvAvailability.value}",
+      "cctvEyeLevel: ${controller.cctvEyeLevel.value}",
+      "cctvPlacement: ${controller.cctvPlacement.value}",
+      "incentive_happiness: ${controller.incentive_happiness.value}",
+      "retailCategory: ${controller.retailCategory.value}",
+      "retailType: ${controller.retailType.value}",
+      "premises: ${controller.premises.value}",
+      "brand1: ${controller.brand1.value}",
+      "brand2: ${controller.brand2.value}",
+      "brand3: ${controller.brand3.value}",
+      "brand4: ${controller.brand4.value}",
+      "brand5: ${controller.brand5.value}",
+      "holidays: ${controller.selectedHolidays.value}",
+      "camera_positons_available: ${controller.selectedCameraPlacementOptions.value}",
     ];
-
 
     logList.forEach((log) {
       print(log);
     });
+
   }
 }
 

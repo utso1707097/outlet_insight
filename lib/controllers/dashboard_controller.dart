@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 
 class DashboardController extends GetxController {
   // Current user ID
-  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  final MultiSelectController multiSelectController = MultiSelectController();
+
   RxString currentUserId = "".obs;
   RxString respondent = "".obs;
   RxString retailName = "".obs;
@@ -26,6 +28,34 @@ class DashboardController extends GetxController {
   RxString client = "".obs;
   RxString averageDailySales = "".obs;
 
+  // Rx variables for dropdown fields
+  final RxString relationshipWithRetail = "".obs;
+  final RxString ownershipType = "".obs;
+  final RxString tradeAvailability = "".obs;
+  final RxString whoseBkash = "".obs;
+  final RxString internetAvailability = "".obs;
+  final RxString cctvAvailability = "".obs;
+  final RxString cctvEyeLevel = "".obs;
+  final RxString cctvPlacement = "".obs;
+  final RxString incentive_happiness = "".obs;
+  final RxString retailCategory = "".obs;
+  final RxString retailType = "".obs;
+  final RxString premises = "".obs;
+
+  // Rx variables for brand
+  final RxString brand1 = "".obs;
+  final RxString brand2 = "".obs;
+  final RxString brand3 = "".obs;
+  final RxString brand4 = "".obs;
+  final RxString brand5 = "".obs;
+
+
+  // Rx variables for multiselect dropdown fields
+
+  RxList<String> selectedHolidays = <String>[].obs;
+  RxList<String> selectedCameraPlacementOptions = <String>[].obs;
+
+
   // RxString variables to hold base64 images
   RxString interiorBase64Image = ''.obs;
   RxString exteriorBase64Image = ''.obs;
@@ -34,11 +64,56 @@ class DashboardController extends GetxController {
 
   // Method to clear all image data
   void clearData() {
+    // Clear all data
+    currentUserId.value = "";
+    respondent.value = "";
+    retailName.value = "";
+    street.value = "";
+    cluster.value = "";
+    area.value = "";
+    owner.value = "";
+    phone1.value = "";
+    phone2.value = "";
+    bkash.value = "";
+    pointOfContactName.value = "";
+    pointOfContactPhone.value = "";
+    averageFootfall.value = "";
+    openTime.value = "";
+    closeTime.value = "";
+    amountDemand.value = "";
+    largestIncentive.value = "";
+    client.value = "";
+    averageDailySales.value = "";
+
+    relationshipWithRetail.value = "";
+    ownershipType.value = "";
+    tradeAvailability.value = "";
+    whoseBkash.value = "";
+    internetAvailability.value = "";
+    cctvAvailability.value = "";
+    cctvEyeLevel.value = "";
+    cctvPlacement.value = "";
+    incentive_happiness.value = "";
+    retailCategory.value = "";
+    retailType.value = "";
+    premises.value = "";
+
+    selectedHolidays.clear();
+    selectedCameraPlacementOptions.clear();
+
     interiorBase64Image.value = '';
     exteriorBase64Image.value = '';
     frontBase64Image.value = '';
     backBase64Image.value = '';
   }
+
+  @override
+  void onClose() {
+    // Dispose the form key when the controller is closed
+    clearData();
+    super.onClose();
+  }
+
 
   // Method to set interior base64 image
   void setInteriorBase64Image(String value) {

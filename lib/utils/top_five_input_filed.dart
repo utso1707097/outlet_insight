@@ -2,8 +2,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:outlet_insight/controllers/dashboard_controller.dart';
 
 class TopBrandsInputField extends StatelessWidget {
+  final DashboardController controller ;
+
+  const TopBrandsInputField({super.key, required this.controller});
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +54,11 @@ class TopBrandsInputField extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 48.h,
-                      child: TextField(
+                      child: TextFormField(
+                        onChanged: (text) {
+                          // Update the fieldVar in the DashboardController
+                          controller.brand1.value = text;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Brand 1',
                           hintStyle: TextStyle(fontSize: 12.sp,color: const Color(0xff7E7B7B),),
@@ -60,7 +70,11 @@ class TopBrandsInputField extends StatelessWidget {
                     //SizedBox(height: 10.h), // Add some vertical spacing between TextFields
                     SizedBox(
                       height: 48.h,
-                      child: TextField(
+                      child: TextFormField(
+                        onChanged: (text) {
+                          // Update the fieldVar in the DashboardController
+                          controller.brand2.value = text;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Brand 2',
                           hintStyle: TextStyle(fontSize: 12.sp,color: const Color(0xff7E7B7B),),
@@ -72,7 +86,11 @@ class TopBrandsInputField extends StatelessWidget {
                     //SizedBox(height: 10.h), // Add some vertical spacing between TextFields
                     SizedBox(
                       height: 48.h,
-                      child: TextField(
+                      child: TextFormField(
+                        onChanged: (text) {
+                          // Update the fieldVar in the DashboardController
+                          controller.brand3.value = text;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Brand 3',
                           hintStyle: TextStyle(fontSize: 12.sp,color: const Color(0xff7E7B7B),),
@@ -84,7 +102,11 @@ class TopBrandsInputField extends StatelessWidget {
                     //SizedBox(height: 10.h), // Add some vertical spacing between TextFields
                     SizedBox(
                       height: 48.h,
-                      child: TextField(
+                      child: TextFormField(
+                        onChanged: (text) {
+                          // Update the fieldVar in the DashboardController
+                          controller.brand4.value = text;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Brand 4',
                           hintStyle: TextStyle(fontSize: 12.sp,color: const Color(0xff7E7B7B),),
@@ -96,7 +118,11 @@ class TopBrandsInputField extends StatelessWidget {
                     //SizedBox(height: 10.h), // Add some vertical spacing between TextFields
                     SizedBox(
                       height: 48.h,
-                      child: TextField(
+                      child: TextFormField(
+                        onChanged: (text) {
+                          // Update the fieldVar in the DashboardController
+                          controller.brand5.value = text;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Brand 5',
                           hintStyle: TextStyle(fontSize: 12.sp,color: const Color(0xff7E7B7B),),

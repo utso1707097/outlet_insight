@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:outlet_insight/controllers/dashboard_controller.dart';
 
-class CustomDropdownField<T> extends StatelessWidget {
+class CustomDropdownField extends StatelessWidget {
   final IconData icon;
   final String hintText;
-  final List<T> items;
+  final List<String> items;
   final DashboardController controller;
-  final String fieldName;
+  final RxString fieldVar;
   final String? selectedValue; // Assuming you have a selected value variable
 
   const CustomDropdownField({
@@ -18,7 +18,7 @@ class CustomDropdownField<T> extends StatelessWidget {
     required this.hintText,
     required this.items,
     required this.controller,
-    required this.fieldName,
+    required this.fieldVar,
     this.selectedValue,
   }) : super(key: key);
 
@@ -45,81 +45,92 @@ class CustomDropdownField<T> extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
           ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
-              isExpanded: true,
-              hint: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      hintText,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        // fontWeight: FontWeight.bold,
-                        //color: const Color(0xff7E7B7B),
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-              items: items
-                  .map((item) => DropdownMenuItem<String>(
-                value: item.toString(),
-                child: Text(
-                  item.toString(),
+          child: Obx( ()=>
+            DropdownButtonHideUnderline(
+              child: DropdownButton2<String>(
+                isExpanded: true,
+                hint: fieldVar.value.isNotEmpty
+                    ? Text(
+                  fieldVar.value,
                   style: TextStyle(
                     fontSize: 12.sp,
                     // fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                   overflow: TextOverflow.ellipsis,
+                )
+                    : Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        hintText,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          // fontWeight: FontWeight.bold,
+                          // color: const Color(0xff7E7B7B),
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
-              ))
-                  .toList(),
-
-              value: selectedValue,
-              onChanged: (String? value) {
-                // Handle onChanged event here
-              },
-              buttonStyleData: ButtonStyleData(
-                height: 48.h,
-                width: 259.w,
-                padding: EdgeInsets.only(left: 14.w, right: 14.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.w),
-                  // border: Border.all(
-                  //   color: Colors.black26,
-                  // ),
-                  // color: Colors.redAccent,
+                items: items
+                    .map((item) => DropdownMenuItem<String>(
+                  value: item.toString(),
+                  child: Text(
+                    item.toString(),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+                    .toList(),
+                value: fieldVar.value.isNotEmpty ? fieldVar.value : null,
+                onChanged: (String? value) {
+                  fieldVar.value = value!;
+                },
+                buttonStyleData: ButtonStyleData(
+                  height: 48.h,
+                  width: 259.w,
+                  padding: EdgeInsets.only(left: 14.w, right: 14.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.w),
+                    // border: Border.all(
+                    //   color: Colors.black26,
+                    // ),
+                    // color: Colors.redAccent,
+                  ),
+                  // elevation: 2,
                 ),
-                // elevation: 2,
-              ),
-              // iconStyleData: IconStyleData(
-              //   icon: Icon(
-              //     Icons.arrow_forward_ios_outlined,
-              //   ),
-              //   iconSize: 14.sp,
-              //   iconEnabledColor: Colors.yellow,
-              //   iconDisabledColor: Colors.grey,
-              // ),
-              dropdownStyleData: DropdownStyleData(
-                maxHeight: 200.h,
-                width: 259.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.w),
-                  // color: Colors.redAccent,
+                // iconStyleData: IconStyleData(
+                //   icon: Icon(
+                //     Icons.arrow_forward_ios_outlined,
+                //   ),
+                //   iconSize: 14.sp,
+                //   iconEnabledColor: Colors.yellow,
+                //   iconDisabledColor: Colors.grey,
+                // ),
+                dropdownStyleData: DropdownStyleData(
+                  maxHeight: 200.h,
+                  width: 259.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.w),
+                    // color: Colors.redAccent,
+                  ),
+                  offset: Offset(-20.w, 0),
+                  scrollbarTheme: ScrollbarThemeData(
+                    radius: Radius.circular(40.w),
+                    thickness: MaterialStateProperty.all<double>(6.w),
+                    thumbVisibility: MaterialStateProperty.all<bool>(true),
+                  ),
                 ),
-                offset: Offset(-20.w, 0),
-                scrollbarTheme: ScrollbarThemeData(
-                  radius: Radius.circular(40.w),
-                  thickness: MaterialStateProperty.all<double>(6.w),
-                  thumbVisibility: MaterialStateProperty.all<bool>(true),
+                menuItemStyleData: MenuItemStyleData(
+                  height: 40.h,
+                  padding: EdgeInsets.only(left: 14.w, right: 14.w),
                 ),
-              ),
-              menuItemStyleData: MenuItemStyleData(
-                height: 40.h,
-                padding: EdgeInsets.only(left: 14.w, right: 14.w),
               ),
             ),
           ),
