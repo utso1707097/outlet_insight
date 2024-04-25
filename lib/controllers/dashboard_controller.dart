@@ -1,10 +1,30 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 
 class DashboardController extends GetxController {
   // Current user ID
-  String currentUserId = "";
+  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  RxString currentUserId = "".obs;
+  RxString respondent = "".obs;
+  RxString retailName = "".obs;
+  RxString street = "".obs;
+  RxString cluster = "".obs;
+  RxString area = "".obs;
+  RxString owner = "".obs;
+  RxString phone1 = "".obs;
+  RxString phone2 = "".obs;
+  RxString bkash = "".obs;
+  RxString pointOfContactName = "".obs;
+  RxString pointOfContactPhone = "".obs;
+  RxString averageFootfall = "".obs;
+  RxString openTime = "".obs;
+  RxString closeTime = "".obs;
+  RxString amountDemand = "".obs;
+  RxString largestIncentive = "".obs;
+  RxString client = "".obs;
+  RxString averageDailySales = "".obs;
 
   // RxString variables to hold base64 images
   RxString interiorBase64Image = ''.obs;

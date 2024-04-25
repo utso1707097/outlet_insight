@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,7 @@ class OutletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("rebuilding");
     final DashboardController controller =
     Get.put(DashboardController());
     return Scaffold(
@@ -30,288 +33,350 @@ class OutletPage extends StatelessWidget {
         ),
       ),
       drawer: CustomDrawer(),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 20.h),
-              CustomInputField(
-                icon: Icons.person,
-                hintText: 'Enter Respondent\'s name',
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.real_estate_agent_outlined,
-                  hintText: "Respondent's relationship with retail",
-                  items: ["owner","employee","other"],
-                  controller: controller,
-                  fieldName: "relation"
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.shop,
-                hintText: 'Retail name',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.edit_road,
-                hintText: 'Street',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.auto_graph,
-                hintText: 'Cluster',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.area_chart,
-                hintText: 'Area',
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.real_estate_agent_outlined,
-                  hintText: "Partnership or single owner",
-                  items: ["Single owner","Partnership"],
-                  controller: controller,
-                  fieldName: "ownership"
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.manage_accounts_rounded,
-                hintText: 'Owner\'s name',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.phone,
-                hintText: 'Owner\'s contact number 1',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.phone_paused_outlined,
-                hintText: 'Owner\'s contact number 2',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.business,
-                hintText: 'Owner\'s bkash account number',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.contact_emergency,
-                hintText: 'Point of contact\'s name',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.contact_phone,
-                hintText: 'Point of contact\'s phone number',
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.question_mark,
-                  hintText: "Who\'s bkash number shall be used to transfer incentives",
-                  items: ["Owner’sr","Point of contact"],
-                  controller: controller,
-                  fieldName: "ownership"
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.question_mark,
-                  hintText: "Trade license's availability",
-                  items: ["Yes","No"],
-                  controller: controller,
-                  fieldName: "trade"
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.align_vertical_bottom_outlined,
-                hintText: 'Average consumer footfall/day',
-              ),
-              SizedBox(height: 12.h),
-              MultiSelectDropdownField(
-                  icon: Icons.holiday_village_outlined,
-                  hintText: "Weekly off days",
-                  items: ["Saturday", "Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                  controller: controller,
-                  fieldName: "holidays"
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.access_time,
-                hintText: 'Open time',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.access_time_filled_rounded,
-                hintText: 'Close time',
-              ),
-              SizedBox(height: 12.h),
-              TopBrandsInputField(),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.router,
-                  hintText: "Internet hardware availability on premise",
-                  items: ["Yes","No"],
-                  controller: controller,
-                  fieldName: "internet_availability"
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.camera_enhance,
-                  hintText: "CCTV availability on premise",
-                  items: ["Yes","No"],
-                  controller: controller,
-                  fieldName: "cctv_availability"
-              ),
-
-              // If yes, where is the monitor placed
-              SizedBox(height: 12.h),
-              MultiSelectDropdownField(
-                  icon: Icons.place_outlined,
-                  hintText: "What place is available to mount the display?",
-                  items: [
-                    "Countertop",
-                    "Back wall",
-                    "Left side wall",
-                    "Right side wall",
-                    "Entry column",
-                    "Back shelf",
-                    "Right shelf",
-                    "Left shelf",
-                    "Other (Please specify...)"
-                  ],
-                  controller: controller,
-                  fieldName: "Camera_placement"
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                  icon: Icons.question_answer,
-                  hintText: "Is it going to be placed at any corner?",
-                  items: ["yes","no"],
-                  controller: controller,
-                  fieldName: "cctv_placement",
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                icon: Icons.question_answer,
-                hintText: "Will the display be placed at eye level?",
-                items: ["yes","no"],
-                controller: controller,
-                fieldName: "cctv_eye_level",
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                icon: Icons.question_answer,
-                hintText: "Is the retailer happy with the incentive amount offered?",
-                items: ["yes","no"],
-                controller: controller,
-                fieldName: "intersive_happiness",
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.question_answer,
-                hintText: 'If not, what amount does he demand?',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.question_answer,
-                hintText: 'What is the largest amount of incentive he gets from promotional installation?',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.manage_accounts_rounded,
-                hintText: 'Who is the client?',
-              ),
-              SizedBox(height: 12.h),
-              CustomInputField(
-                icon: Icons.point_of_sale,
-                hintText: 'Average daily sales',
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                icon: Icons.category,
-                hintText: "Retail category",
-                items: ["A","B","C"],
-                controller: controller,
-                fieldName: "retail_category",
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                icon: Icons.local_grocery_store,
-                hintText: "Retail category",
-                items: ["Grocery Shop","Departmental Store","other"],
-                controller: controller,
-                fieldName: "Retail type",
-              ),
-              SizedBox(height: 12.h),
-              CustomDropdownField(
-                icon: Icons.workspace_premium_sharp,
-                hintText: "Premises",
-                items: ["Wet Market","Market 3","Standalone"],
-                controller: controller,
-                fieldName: "Premises",
-              ),
-              SizedBox(height: 10.h),
-              ImageSelector(
-                icon: Icons.photo,
-                hintText: 'Select outlet interior image',
-                cameraType: 'interior',
-                controller: controller,
-              ),
-              //SizedBox(height: 10.h),
-              ImageSelector(
-                icon: Icons.photo,
-                hintText: 'Select outlet exterior image',
-                cameraType: 'exterior',
-                controller: controller,
-              ),
-              //SizedBox(height: 10.h),
-              ImageSelector(
-                icon: Icons.photo,
-                hintText: 'Select outlet front image',
-                cameraType: 'front',
-                controller: controller,
-              ),
-              SizedBox(height: 12.h),
-              ImageSelector(
-                icon: Icons.photo,
-                hintText: 'Select outlet back image',
-                cameraType: 'back',
-                controller: controller,
-              ),
-              SizedBox(height: 10.h),
-              Container(
-                width: 70.h,
-                height: 70.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+      body: GestureDetector(
+        onTap: () {
+          // Unfocus the text field when tapping outside
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Form(
+              key: controller.globalFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 20.h),
+                  CustomInputField(
+                    icon: Icons.person,
+                    hintText: 'Enter Respondent\'s name',
+                    fieldVar: controller.respondent,
+                    inputType: TextInputType.text,
                   ),
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.check, color: Colors.white, size: 40.h),
-                  onPressed: () {
-                    print(controller.interiorBase64Image.value);
-                    print(controller.exteriorBase64Image.value);
-                    print(controller.frontBase64Image.value);
-                    print(controller.backBase64Image.value);
-                    // Add your onPressed callback here
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => QuestionairePage()),
-                    // );
-                  },
-                ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.real_estate_agent_outlined,
+                      hintText: "Respondent's relationship with retail",
+                      items: ["owner","employee","other"],
+                      controller: controller,
+                      fieldName: "relation"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.shop,
+                    hintText: 'Retail name',
+                    fieldVar: controller.retailName,
+                    inputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.edit_road,
+                    hintText: 'Street',
+                    fieldVar: controller.street,
+                    inputType: TextInputType.streetAddress,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.auto_graph,
+                    hintText: 'Cluster',
+                    fieldVar: controller.cluster,
+                    inputType: TextInputType.streetAddress,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.area_chart,
+                    hintText: 'Area',
+                    fieldVar: controller.area,
+                    inputType: TextInputType.streetAddress,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.real_estate_agent_outlined,
+                      hintText: "Partnership or single owner",
+                      items: ["Single owner","Partnership"],
+                      controller: controller,
+                      fieldName: "ownership"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.manage_accounts_rounded,
+                    hintText: 'Owner\'s name',
+                    fieldVar: controller.owner,
+                    inputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.phone,
+                    hintText: 'Owner\'s contact number 1',
+                    fieldVar: controller.phone1,
+                    inputType: TextInputType.phone,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.phone_paused_outlined,
+                    hintText: 'Owner\'s contact number 2',
+                    fieldVar: controller.phone2,
+                    inputType: TextInputType.phone,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.business,
+                    hintText: 'Owner\'s bkash account number',
+                    fieldVar: controller.bkash,
+                    inputType: TextInputType.phone,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.contact_emergency,
+                    hintText: 'Point of contact\'s name',
+                    fieldVar: controller.pointOfContactName,
+                    inputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.contact_phone,
+                    hintText: 'Point of contact\'s phone number',
+                    fieldVar: controller.pointOfContactPhone,
+                    inputType: TextInputType.phone,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.question_mark,
+                      hintText: "Who\'s bkash number shall be used to transfer incentives",
+                      items: ["Owner’sr","Point of contact"],
+                      controller: controller,
+                      fieldName: "ownership"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.question_mark,
+                      hintText: "Trade license's availability",
+                      items: ["Yes","No"],
+                      controller: controller,
+                      fieldName: "trade"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.align_vertical_bottom_outlined,
+                    hintText: 'Average consumer footfall/day',
+                    fieldVar: controller.averageFootfall,
+                    inputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 12.h),
+                  MultiSelectDropdownField(
+                      icon: Icons.holiday_village_outlined,
+                      hintText: "Weekly off days",
+                      items: ["Saturday", "Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                      controller: controller,
+                      fieldName: "holidays",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.access_time,
+                    hintText: 'Open time',
+                    fieldVar: controller.openTime,
+                    inputType: TextInputType.datetime,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.access_time_filled_rounded,
+                    hintText: 'Close time',
+                    fieldVar: controller.closeTime,
+                    inputType: TextInputType.datetime,
+                  ),
+                  SizedBox(height: 12.h),
+                  TopBrandsInputField(),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.router,
+                      hintText: "Internet hardware availability on premise",
+                      items: ["Yes","No"],
+                      controller: controller,
+                      fieldName: "internet_availability"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.camera_enhance,
+                      hintText: "CCTV availability on premise",
+                      items: ["Yes","No"],
+                      controller: controller,
+                      fieldName: "cctv_availability"
+                  ),
+
+                  // If yes, where is the monitor placed
+                  SizedBox(height: 12.h),
+                  MultiSelectDropdownField(
+                      icon: Icons.place_outlined,
+                      hintText: "What place is available to mount the display?",
+                      items: [
+                        "Countertop",
+                        "Back wall",
+                        "Left side wall",
+                        "Right side wall",
+                        "Entry column",
+                        "Back shelf",
+                        "Right shelf",
+                        "Left shelf",
+                        "Other (Please specify...)"
+                      ],
+                      controller: controller,
+                      fieldName: "Camera_placement"
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                      icon: Icons.question_answer,
+                      hintText: "Is it going to be placed at any corner?",
+                      items: ["yes","no"],
+                      controller: controller,
+                      fieldName: "cctv_placement",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                    icon: Icons.question_answer,
+                    hintText: "Will the display be placed at eye level?",
+                    items: ["yes","no"],
+                    controller: controller,
+                    fieldName: "cctv_eye_level",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                    icon: Icons.question_answer,
+                    hintText: "Is the retailer happy with the incentive amount offered?",
+                    items: ["yes","no"],
+                    controller: controller,
+                    fieldName: "intersive_happiness",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.question_answer,
+                    hintText: 'If not, what amount does he demand?',
+                    fieldVar: controller.amountDemand,
+                    inputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.question_answer,
+                    hintText: 'What is the largest amount of incentive he gets from promotional installation?',
+                    fieldVar: controller.largestIncentive,
+                    inputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.manage_accounts_rounded,
+                    hintText: 'Who is the client?',
+                    fieldVar: controller.client,
+                    inputType: TextInputType.text,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomInputField(
+                    icon: Icons.point_of_sale,
+                    hintText: 'Average daily sales',
+                    fieldVar: controller.averageDailySales,
+                    inputType: TextInputType.number,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                    icon: Icons.category,
+                    hintText: "Retail category",
+                    items: ["A","B","C"],
+                    controller: controller,
+                    fieldName: "retail_category",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                    icon: Icons.local_grocery_store,
+                    hintText: "Retail category",
+                    items: ["Grocery Shop","Departmental Store","other"],
+                    controller: controller,
+                    fieldName: "Retail type",
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomDropdownField(
+                    icon: Icons.workspace_premium_sharp,
+                    hintText: "Premises",
+                    items: ["Wet Market","Market 3","Standalone"],
+                    controller: controller,
+                    fieldName: "Premises",
+                  ),
+                  SizedBox(height: 10.h),
+                  ImageSelector(
+                    icon: Icons.photo,
+                    hintText: 'Select outlet interior image',
+                    fieldVar: controller.interiorBase64Image,
+                  ),
+                  //SizedBox(height: 10.h),
+                  ImageSelector(
+                    icon: Icons.photo,
+                    hintText: 'Select outlet exterior image',
+                    fieldVar: controller.exteriorBase64Image,
+                  ),
+                  //SizedBox(height: 10.h),
+                  ImageSelector(
+                    icon: Icons.photo,
+                    hintText: 'Select outlet front image',
+                    fieldVar: controller.frontBase64Image,
+                  ),
+                  ImageSelector(
+                    icon: Icons.photo,
+                    hintText: 'Select outlet back image',
+                    fieldVar: controller.backBase64Image,
+                  ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    width: 70.h,
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.check, color: Colors.white, size: 40.h),
+                      onPressed: () {
+                        inputLog(controller);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 30.h),
+                ],
               ),
-              SizedBox(height: 30.h),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  void inputLog(DashboardController controller) {
+    final List<String> logList = [
+      "currentUserId: ${controller.currentUserId.value}",
+      "respondent: ${controller.respondent.value}",
+      "retailName: ${controller.retailName.value}",
+      "street: ${controller.street.value}",
+      "cluster: ${controller.cluster.value}",
+      "area: ${controller.area.value}",
+      "owner: ${controller.owner.value}",
+      "phone1: ${controller.phone1.value}",
+      "phone2: ${controller.phone2.value}",
+      "bkash: ${controller.bkash.value}",
+      "pointOfContactName: ${controller.pointOfContactName.value}",
+      "pointOfContactPhone: ${controller.pointOfContactPhone.value}",
+      "averageFootfall: ${controller.averageFootfall.value}",
+      "openTime: ${controller.openTime.value}",
+      "closeTime: ${controller.closeTime.value}",
+      "amountDemand: ${controller.amountDemand.value}",
+      "largestIncentive: ${controller.largestIncentive.value}",
+      "client: ${controller.client.value}",
+      "averageDailySales: ${controller.averageDailySales.value}",
+    ];
+
+
+    logList.forEach((log) {
+      print(log);
+    });
+  }
 }
+

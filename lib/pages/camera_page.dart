@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image/image.dart' as img;
 import 'dart:convert';
@@ -13,10 +14,9 @@ import 'package:image_editor/image_editor.dart' as editor;
 
 class CameraPageWithGallery extends StatefulWidget {
   // final EmployeeUpdateController controller;
-  final DashboardController controller;
-  final String cameraType;
+  final RxString fieldVar;
   const CameraPageWithGallery(
-      {super.key, required this.controller, required this.cameraType});
+      {super.key, required this.fieldVar});
 
   @override
   State<CameraPageWithGallery> createState() => _CameraPageWithGalleryState();
@@ -71,7 +71,7 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
     option.addOption(
       editor.FlipOption(
         horizontal: _cameraController.value.description.lensDirection ==
-                CameraLensDirection.back
+            CameraLensDirection.back
             ? false
             : true,
       ),
@@ -88,7 +88,7 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
   Future<void> _pickImageFromGallery() async {
     try {
       final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
+      await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         _imageFile = XFile(pickedFile.path);
@@ -109,85 +109,74 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return _imageFile.path.isNotEmpty
-                  ? Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.file(
-                            File(_imageFile.path),
-                          ),
+                ? Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: double.infinity,
+                  child: Image.file(
+                    File(_imageFile.path),
+                    fit:BoxFit.contain
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.check,
+                          color: Colors.green,
+                          size: 60.0,
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                  size: 60.0,
-                                ),
-                                onPressed: () async {
-                                  List<int> imageBytes =
-                                      await File(_imageFile.path).readAsBytes();
-                                  String base64Image = base64Encode(imageBytes);
-                                  log(base64Image);
-                                  log('Image confirmed!');
-                                  if (mounted) {
-                                    Navigator.pop(context, base64Image);
-                                  }
-                                  log("That is: $base64Image");
-                                  log("That is: ${widget.cameraType}");
-                                  if (widget.cameraType == 'interior') {
-                                    widget.controller
-                                        .setInteriorBase64Image(base64Image);
-                                    log("interiour image saved successfully!");
-                                  } else if (widget.cameraType == 'exterior') {
-                                    widget.controller
-                                        .setExteriorBase64Image(base64Image);
-                                  } else if (widget.cameraType == 'front') {
-                                    widget.controller
-                                        .setFrontBase64Image(base64Image);
-                                  } else if (widget.cameraType == 'back') {
-                                    widget.controller
-                                        .setBackBase64Image(base64Image);
-                                  }
-                                  setState(() {
-                                    _imageFile = XFile('');
-                                  });
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                  // Change the color to light green
-                                  size:
-                                      60.0, // Change the size to 36.0 or any other desired size
-                                ),
-                                onPressed: () {
-                                  log('Image discarded!');
-                                  //Navigator.of(context).pop(); // Close the dialog
-                                  setState(() {
-                                    _imageFile = XFile('');
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+                        onPressed: () async {
+                          List<int> imageBytes =
+                          await File(_imageFile.path).readAsBytes();
+                          String base64Image = base64Encode(imageBytes);
+                          log(base64Image);
+                          log('Image confirmed!');
+                          if (mounted) {
+                            Navigator.pop(context, base64Image);
+                          }
+                          log("That is: $base64Image");
+                          widget.fieldVar.value = base64Image;
+                          setState(() {
+                            _imageFile = XFile('');
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.red,
+                          // Change the color to light green
+                          size:
+                          60.0, // Change the size to 36.0 or any other desired size
                         ),
-                      ],
-                    )
-                  : SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      width: double.maxFinite,
-                      child: CameraPreview(_cameraController));
+                        onPressed: () {
+                          log('Image discarded!');
+                          //Navigator.of(context).pop(); // Close the dialog
+                          setState(() {
+                            _imageFile = XFile('');
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+                : SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: double.maxFinite,
+                child: CameraPreview(_cameraController));
           } else {
             return const Center(child: CircularProgressIndicator());
           }

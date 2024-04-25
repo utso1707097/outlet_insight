@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:outlet_insight/controllers/dashboard_controller.dart';
 
 class CustomInputField extends StatelessWidget {
   final IconData icon;
   final String hintText;
+  final RxString fieldVar;
+  final TextInputType inputType;
 
   const CustomInputField({
     Key? key,
     required this.icon,
     required this.hintText,
+    required this.fieldVar,
+    required this.inputType,
   }) : super(key: key);
 
   @override
@@ -34,7 +40,13 @@ class CustomInputField extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
           ),
-          child: TextField(
+          child: TextFormField(
+            onChanged: (text) {
+              // Update the fieldVar in the DashboardController
+              fieldVar.value = text;
+            },
+            keyboardType: inputType,
+            cursorColor: Colors.black,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hintText,

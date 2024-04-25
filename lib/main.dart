@@ -37,13 +37,7 @@ class MyHomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(
-      context,
-      designSize: const Size(360, 800),
-    );
-    return CameraPageWithGallery(
-      cameraType: "",
-      controller: DashboardController(),
-    );
+    ScreenUtil.init(context,designSize: const Size(360, 800),);
+    return const LoginPage();
   }
 }

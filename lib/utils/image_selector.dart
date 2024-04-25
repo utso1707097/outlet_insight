@@ -10,15 +10,13 @@ import 'package:outlet_insight/pages/camera_page.dart';
 class ImageSelector extends StatelessWidget {
   final IconData icon;
   final String hintText;
-  final String cameraType;
-  final DashboardController controller;
+  final RxString fieldVar;
 
   const ImageSelector({
     Key? key,
     required this.icon,
     required this.hintText,
-    required this.cameraType,
-    required this.controller,
+    required this.fieldVar,
   }) : super(key: key);
 
   @override
@@ -31,59 +29,35 @@ class ImageSelector extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CameraPageWithGallery(controller: controller,cameraType:cameraType)),
+              MaterialPageRoute(builder: (context) => CameraPageWithGallery(fieldVar: fieldVar,)),
             );
           },
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-            width: 300.w,
-            height: 240.h,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.w),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: Offset(0, 1), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Stack(
-                children: [
-                  // Image
-                  if (cameraType == 'interior' && controller.interiorBase64Image.value != "")
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+              width: 300.w,
+              height: 240.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.w),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Obx(
+                ()=> Stack(
+                  children: [
                     Positioned.fill(
-                      child: Image(
-                        image: MemoryImage(base64Decode(controller.interiorBase64Image.value)),
+                      child: fieldVar.value != ""
+                          ? Image.memory(
+                        base64Decode(fieldVar.value),
                         fit: BoxFit.cover,
-                      ),
-                    )
-                  else if(cameraType == 'exterior' && controller.exteriorBase64Image.value != "")
-                    Positioned.fill(
-                      child: Image(
-                        image: MemoryImage(base64Decode(controller.exteriorBase64Image.value)),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  else if(cameraType == 'front' && controller.frontBase64Image.value != "")
-                      Positioned.fill(
-                        child: Image(
-                          image: MemoryImage(base64Decode(controller.frontBase64Image.value)),
-                          fit: BoxFit.cover,
-                        ),
                       )
-                    else if(cameraType == 'back' && controller.backBase64Image.value != "")
-                        Positioned.fill(
-                          child: Image(
-                            image: MemoryImage(base64Decode(controller.backBase64Image.value)),
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                  else
-                    Positioned.fill(
-                      child: Center(
+                          : Center(
                         child: ShaderMask(
                           shaderCallback: (bounds) {
                             return LinearGradient(
@@ -96,45 +70,44 @@ class ImageSelector extends StatelessWidget {
                         ),
                       ),
                     ),
-                  // Camera Icon at Bottom Right Corner
-                  Positioned(
-                    bottom: 10.h,
-                    right: 10.w,
-                    child: Icon(Icons.camera_alt, color:Color(0xff008DDF), size: 30.sp),
-                  ),
-                  // Title Section
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
+                    Positioned(
+                      bottom: 10.h,
+                      right: 10.w,
+                      child: Icon(Icons.camera_alt, color: Color(0xff008DDF), size: 30.sp),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(12.w),
+                            topLeft: Radius.circular(12.w),
+                          ),
                         ),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(12.w),
-                          topLeft: Radius.circular(12.w),
-                        ),
-                      ),
-                      padding: EdgeInsets.all(12.w),
-                      child: Center(
-                        child: Text(
-                          hintText,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                        padding: EdgeInsets.all(12.w),
+                        child: Center(
+                          child: Text(
+                            hintText,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-          ),
+            ),
         ),
         // Text Field
       ],
