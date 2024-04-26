@@ -30,7 +30,7 @@ class OutletPage extends StatelessWidget {
           ),
         ),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: GestureDetector(
         onTap: () {
           // Unfocus the text field when tapping outside
@@ -323,7 +323,7 @@ class OutletPage extends StatelessWidget {
                   Container(
                     width: 70.h,
                     height: 70.h,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                         colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
