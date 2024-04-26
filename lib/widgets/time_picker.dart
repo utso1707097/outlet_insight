@@ -25,12 +25,16 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
   TimeOfDay? _timeOfDay;
 
   String convertDateTime(String timeString) {
-    DateTime time = DateFormat.Hm().parse(timeString);
+    log(timeString);
+    if (timeString != ":") {
+      DateTime time = DateFormat.Hm().parse(timeString);
 
-    // Format the DateTime object into the desired format
-    String formattedTime = DateFormat('h:mm a').format(time);
+      // Format the DateTime object into the desired format
+      String formattedTime = DateFormat('h:mm a').format(time);
 
-    return formattedTime;
+      return formattedTime;
+    }
+    return "Choose time";
   }
 
   @override
@@ -53,6 +57,7 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
           onTap: () async {
             final TimeOfDay? selectedTime = await showTimePicker(
               initialTime: TimeOfDay.now(),
+              initialEntryMode: TimePickerEntryMode.input,
               context: context,
             );
 
