@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:outlet_insight/pages/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/OutletPage.dart';
 
@@ -62,8 +63,10 @@ class CustomDrawer extends StatelessWidget {
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),),
-            onTap: () {
-              Navigator.push(
+            onTap: () async{
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.clear();
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
               );

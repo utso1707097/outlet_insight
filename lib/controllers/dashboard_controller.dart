@@ -8,7 +8,7 @@ class DashboardController extends GetxController {
   // Current user ID
   final MultiSelectController multiSelectController = MultiSelectController();
 
-  RxString currentUserId = "".obs;
+  //RxString currentUserId = "".obs;
   RxString respondent = "".obs;
   RxString retailName = "".obs;
   RxString street = "".obs;
@@ -65,7 +65,7 @@ class DashboardController extends GetxController {
   // Method to clear all image data
   void clearData() {
     // Clear all data
-    currentUserId.value = "";
+    //currentUserId.value = "";
     respondent.value = "";
     retailName.value = "";
     street.value = "";

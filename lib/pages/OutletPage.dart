@@ -350,7 +350,7 @@ class OutletPage extends StatelessWidget {
 
   void inputLog(DashboardController controller) {
     final List<String> logList = [
-      "currentUserId: ${controller.currentUserId.value}",
+      // "currentUserId: ${controller.currentUserId.value}",
       "respondent: ${controller.respondent.value}",
       "retailName: ${controller.retailName.value}",
       "street: ${controller.street.value}",

@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:outlet_insight/controllers/dashboard_controller.dart';
+import 'package:outlet_insight/controllers/home_page_controller.dart';
 import 'package:outlet_insight/pages/camera_page.dart';
 import 'package:outlet_insight/pages/login_page.dart';
+import 'package:outlet_insight/utils/custom_loading_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'pages/OutletPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,17 +32,24 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomPage(),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomPage extends StatelessWidget {
-  const MyHomPage({super.key});
+class MyHomePage extends StatelessWidget {
+  final HomePageController homePageController = Get.put(HomePageController());
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,designSize: const Size(360, 800),);
-    return LoginPage();
+    ScreenUtil.init(context, designSize: const Size(360, 800));
+    return Obx(() {
+     if (homePageController.seen) {
+        return OutletPage();
+      } else {
+        return LoginPage();
+      }
+    });
   }
 }
+
