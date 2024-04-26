@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:outlet_insight/controllers/shared_preference_controller.dart';
+import 'package:outlet_insight/main.dart';
 import 'package:outlet_insight/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
                 begin: Alignment.topCenter,
@@ -27,48 +30,59 @@ class CustomDrawer extends StatelessWidget {
               child: Text(
                 'User menu',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold
-                ),
+                    color: Colors.white,
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
           ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Enter Outlet',style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),),
+            leading: const Icon(Icons.input),
+            title: Text(
+              'Enter Outlet',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => OutletPage()),
+                MaterialPageRoute(builder: (context) => const OutletPage()),
               );
             },
           ),
           ListTile(
-            leading: Icon(Icons.view_list),
-            title: Text('See Entered Outlet',style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),),
+            leading: const Icon(Icons.view_list),
+            title: Text(
+              'See Entered Outlet',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             onTap: () {
               // Navigate to see entered outlet page
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout',style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),),
-            onTap: () async{
-              SharedPreferences pref = await SharedPreferences.getInstance();
-              await pref.clear();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+            leading: const Icon(Icons.logout),
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () async {
+              SharedPreferenceController cache = Get.find();
+              await cache.logout();
+              navigatorKey.currentState!.pop();
+              Future.delayed(Duration(seconds: 2));
+              navigatorKey.currentState!.pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
               );
             },
           ),

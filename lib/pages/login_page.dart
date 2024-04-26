@@ -15,9 +15,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/login_controller.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final LoginController controller = Get.put(LoginController());
-  static GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    super.dispose();
+    _formKey.currentState?.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,14 +122,25 @@ class LoginPage extends StatelessWidget {
                   child: Obx(
                     () => TextFormField(
                       controller: controller.passwordController,
+                      obscureText: controller.isObsecure.value,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         // Hide the default border of the TextField
                         hintText: 'Enter password',
                         // Placeholder text
-                        suffixIcon: controller.passwordError.value
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.lock, color: Color(0xff9893A6)),
+                        // suffixIcon: controller.passwordError.value
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.lock, color: Color(0xff9893A6)),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            controller.isObsecure.value =
+                                !controller.isObsecure.value;
+                          },
+                          child: const Icon(
+                            Icons.visibility,
+                            color: Color(0xff9893A6),
+                          ),
+                        ),
                         hintStyle: TextStyle(
                             color: const Color(0xff7E7B7B), fontSize: 20.sp),
                         errorStyle: const TextStyle(
@@ -144,7 +167,8 @@ class LoginPage extends StatelessWidget {
                   onTap: () async {
                     // Validate the form using _formKey
                     if (_formKey.currentState!.validate()) {
-                      _submitForm(context);
+                      final LoginController controller = Get.find();
+                      controller.login(context);
                     }
                   },
                   child: Container(
@@ -168,102 +192,5 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _submitForm(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomLoadingIndicator();
-      },
-    );
-    String username = controller.nameController.text.trim();
-    String password = controller.passwordController.text;
-
-    try {
-      FocusScope.of(context).unfocus();
-
-      var url = Uri.parse('http://retail.isgalleon.com/api/login/login.php');
-      var request = http.MultipartRequest('POST', url);
-
-      request.fields['LoginId'] = username;
-      request.fields['LoginPassword'] = password;
-
-      var response = await http.Response.fromStream(await request.send());
-      var jsonResponse = json.decode(response.body);
-
-      if (response.statusCode == 200) {
-        bool loginSuccess = json.decode(response.body)['success'];
-        if (loginSuccess) {
-          // log('Login successful! Response: ${response.body}');
-          var sessionData = jsonResponse['sessionData'];
-          // log("Executed");
-          await saveSessionData(sessionData);
-          log(sessionData.toString());
-          Navigator.pop(context);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OutletPage(),
-            ),
-          );
-        } else {
-          Navigator.pop(context);
-          log("${response.statusCode} ${response.body}");
-
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CustomAlertDialog(
-                  title: 'Login failed',
-                  message: json.decode(response.body)['message']);
-            },
-          );
-        }
-      } else {
-        Navigator.pop(context);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomAlertDialog(
-                title: 'Login failed',
-                message: json.decode(response.body)['message']);
-          },
-        );
-      }
-    } catch (error) {
-      log('Error: $error');
-      Navigator.pop(context);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CustomAlertDialog(
-              title: 'Login failed',
-              message: "An unexpected error occurred. Please try again later.");
-        },
-      );
-    }
-  }
-
-  Future<void> saveSessionData(Map<String, dynamic> sessionData) async {
-    //log(sessionData);
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool("seen", true);
-      prefs.setString("user_password", controller.passwordController.text);
-      prefs.setString("user_id", sessionData["user_id"].toString() ?? "");
-      prefs.setString("user_name", sessionData["user_name"].toString() ?? "");
-      prefs.setString("full_name", sessionData["full_name"].toString() ?? "");
-      prefs.setString(
-          "user_type_id", sessionData["user_type_id"].toString() ?? "");
-      prefs.setString(
-          "user_type_name", sessionData["user_type_name"].toString() ?? "");
-      prefs.setString(
-          "picture_name", sessionData["picture_name"].toString() ?? "");
-      log(prefs.getString("user_name").toString());
-      log("He HE he");
-    } catch (error) {
-      log('Error saving session data: $error');
-    }
   }
 }

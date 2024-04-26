@@ -22,9 +22,15 @@ class OutletPage extends StatefulWidget {
 }
 
 class _OutletPageState extends State<OutletPage> {
-  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+   GlobalKey<FormState> globalFormKey =
+      GlobalKey<FormState>(debugLabel: "dsfdsf");
 
   final DashboardController controller = Get.put(DashboardController());
+  @override
+  void dispose() {
+    super.dispose();
+    globalFormKey.currentState?.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

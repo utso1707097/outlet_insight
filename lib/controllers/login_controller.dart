@@ -1,5 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+import 'dart:convert';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:outlet_insight/controllers/shared_preference_controller.dart';
+import 'package:outlet_insight/models/usermodel.dart';
+import 'package:outlet_insight/pages/outlet_page.dart';
+import 'package:outlet_insight/widgets/custom_alert_dialog.dart';
 
 class LoginController extends GetxController {
   // Instantiate TextFieldController
@@ -7,6 +15,7 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   RxBool nameError = false.obs;
   RxBool passwordError = false.obs;
+  RxBool isObsecure = true.obs;
 
   @override
   void onClose() {
@@ -14,5 +23,71 @@ class LoginController extends GetxController {
     nameController.dispose();
     passwordController.dispose();
     super.onClose();
+  }
+
+  Future<void> login(BuildContext context) async {
+    String username = nameController.text.trim();
+    String password = passwordController.text;
+    SharedPreferenceController _cache = Get.find();
+
+    try {
+      FocusScope.of(context).unfocus();
+
+      var url = Uri.parse('http://retail.isgalleon.com/api/login/login.php');
+      var request = http.MultipartRequest('POST', url);
+
+      request.fields['LoginId'] = username;
+      request.fields['LoginPassword'] = password;
+
+      var response = await http.Response.fromStream(await request.send());
+      var jsonResponse = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        bool loginSuccess = json.decode(response.body)['success'];
+        if (loginSuccess) {
+          var sessionData = jsonResponse['sessionData'];
+          UserModel user = UserModel.fromJson(sessionData);
+          await _cache.saveUserInformation(user);
+          nameController.clear();
+          passwordController.clear();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OutletPage(),
+            ),
+          );
+        } else {
+          log("${response.statusCode} ${response.body}");
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomAlertDialog(
+                title: 'Login failed',
+                message: json.decode(response.body)['message'],
+              );
+            },
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+                title: 'Login failed',
+                message: json.decode(response.body)['message']);
+          },
+        );
+      }
+    } catch (error) {
+      log('Error: $error');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(
+              title: 'Login failed',
+              message: "An unexpected error occurred. Please try again later.");
+        },
+      );
+    }
   }
 }
