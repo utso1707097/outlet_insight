@@ -9,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:outlet_insight/pages/outlet_page.dart';
-import 'package:outlet_insight/widgets/custom_alert_dialog.dart';
-import 'package:outlet_insight/widgets/custom_loading_indicator.dart';
+import 'package:outlet_insight/utils/custom_alert_dialog.dart';
+import 'package:outlet_insight/utils/custom_loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/login_controller.dart';

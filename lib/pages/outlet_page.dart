@@ -4,15 +4,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:outlet_insight/widgets/custom_drawer.dart';
-import 'package:outlet_insight/widgets/custom_dropdown_field.dart';
-import 'package:outlet_insight/widgets/multi_select_dropdown_field.dart';
-import 'package:outlet_insight/widgets/time_picker.dart';
-import 'package:outlet_insight/widgets/top_five_input_filed.dart';
+import 'package:outlet_insight/utils/custom_drawer.dart';
+import 'package:outlet_insight/utils/custom_dropdown_field.dart';
+import 'package:outlet_insight/utils/multi_select_dropdown_field.dart';
+import 'package:outlet_insight/utils/time_picker.dart';
+import 'package:outlet_insight/utils/top_five_input_filed.dart';
 
 import '../controllers/dashboard_controller.dart';
-import '../widgets/custom_input_filed.dart';
-import '../widgets/image_selector.dart';
+import '../utils/custom_input_filed.dart';
+import '../utils/image_selector.dart';
 
 class OutletPage extends StatefulWidget {
   const OutletPage({super.key});

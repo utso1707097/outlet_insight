@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:outlet_insight/controllers/shared_preference_controller.dart';
 import 'package:outlet_insight/models/usermodel.dart';
 import 'package:outlet_insight/pages/outlet_page.dart';
-import 'package:outlet_insight/widgets/custom_alert_dialog.dart';
+import 'package:outlet_insight/utils/custom_alert_dialog.dart';
 
 class LoginController extends GetxController {
   // Instantiate TextFieldController
