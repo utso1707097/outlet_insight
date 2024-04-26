@@ -5,10 +5,10 @@ import 'package:outlet_insight/controllers/dashboard_controller.dart';
 import 'package:outlet_insight/controllers/home_page_controller.dart';
 import 'package:outlet_insight/pages/camera_page.dart';
 import 'package:outlet_insight/pages/login_page.dart';
-import 'package:outlet_insight/utils/custom_loading_indicator.dart';
+import 'package:outlet_insight/widgets/custom_loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'pages/OutletPage.dart';
+import 'pages/outlet_page.dart';
 
 void main() {
   runApp(const MyApp());

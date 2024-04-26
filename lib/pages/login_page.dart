@@ -1,13 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:outlet_insight/pages/OutletPage.dart';
-import 'package:outlet_insight/utils/custom_alert_dialog.dart';
-import 'package:outlet_insight/utils/custom_loading_indicator.dart';
+import 'package:outlet_insight/pages/outlet_page.dart';
+import 'package:outlet_insight/widgets/custom_alert_dialog.dart';
+import 'package:outlet_insight/widgets/custom_loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/login_controller.dart';
@@ -66,8 +69,9 @@ class LoginPage extends StatelessWidget {
                         hintText: 'Enter username',
                         // Placeholder text
                         suffixIcon: controller.nameError.value
-                            ? Icon(Icons.error, color: Colors.red)
-                            : Icon(Icons.person, color: Color(0xff9893A6)),
+                            ? const Icon(Icons.error, color: Colors.red)
+                            : const Icon(Icons.person,
+                                color: Color(0xff9893A6)),
                         hintStyle: TextStyle(
                             color: const Color(0xff7E7B7B), fontSize: 20.sp),
                         errorStyle: const TextStyle(
@@ -112,8 +116,8 @@ class LoginPage extends StatelessWidget {
                         hintText: 'Enter password',
                         // Placeholder text
                         suffixIcon: controller.passwordError.value
-                            ? Icon(Icons.error, color: Colors.red)
-                            : Icon(Icons.lock, color: Color(0xff9893A6)),
+                            ? const Icon(Icons.error, color: Colors.red)
+                            : const Icon(Icons.lock, color: Color(0xff9893A6)),
                         hintStyle: TextStyle(
                             color: const Color(0xff7E7B7B), fontSize: 20.sp),
                         errorStyle: const TextStyle(
@@ -146,7 +150,7 @@ class LoginPage extends StatelessWidget {
                   child: Container(
                     width: 70.h,
                     height: 70.h,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
                         colors: [Color(0xFF0273FD), Color(0xFF00D0FF)],
@@ -191,11 +195,11 @@ class LoginPage extends StatelessWidget {
       if (response.statusCode == 200) {
         bool loginSuccess = json.decode(response.body)['success'];
         if (loginSuccess) {
-          // print('Login successful! Response: ${response.body}');
+          // log('Login successful! Response: ${response.body}');
           var sessionData = jsonResponse['sessionData'];
-          // print("Executed");
+          // log("Executed");
           await saveSessionData(sessionData);
-          print(sessionData);
+          log(sessionData.toString());
           Navigator.pop(context);
           Navigator.pushReplacement(
             context,
@@ -205,7 +209,7 @@ class LoginPage extends StatelessWidget {
           );
         } else {
           Navigator.pop(context);
-          print("${response.statusCode} ${response.body}");
+          log("${response.statusCode} ${response.body}");
 
           showDialog(
             context: context,
@@ -228,7 +232,7 @@ class LoginPage extends StatelessWidget {
         );
       }
     } catch (error) {
-      print('Error: $error');
+      log('Error: $error');
       Navigator.pop(context);
       showDialog(
         context: context,
@@ -242,7 +246,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Future<void> saveSessionData(Map<String, dynamic> sessionData) async {
-    //print(sessionData);
+    //log(sessionData);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool("seen", true);
@@ -256,10 +260,10 @@ class LoginPage extends StatelessWidget {
           "user_type_name", sessionData["user_type_name"].toString() ?? "");
       prefs.setString(
           "picture_name", sessionData["picture_name"].toString() ?? "");
-      print(prefs.getString("user_name"));
-      print("He HE he");
+      log(prefs.getString("user_name").toString());
+      log("He HE he");
     } catch (error) {
-      print('Error saving session data: $error');
+      log('Error saving session data: $error');
     }
   }
 }

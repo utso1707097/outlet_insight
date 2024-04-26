@@ -23,11 +23,11 @@ class CustomInputField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.all(0),
+          padding: const EdgeInsets.all(0),
           height: 40.h,
           width: 40.h,
           decoration: BoxDecoration(
-            color: Color(0xff008DDF),
+            color: const Color(0xff008DDF),
             borderRadius: BorderRadius.circular(40.h),
           ),
           child: Icon(icon, size: 24.h, color: Colors.white),
@@ -55,8 +55,7 @@ class CustomInputField extends StatelessWidget {
                 color: const Color(0xff7E7B7B),
                 fontSize: 12.sp,
               ),
-              contentPadding:
-              EdgeInsets.symmetric(horizontal: 20.w),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
             ),
           ),
         ),

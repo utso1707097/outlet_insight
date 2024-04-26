@@ -12,7 +12,7 @@ class MultiSelectDropdownField extends StatelessWidget {
   final DashboardController controller;
   final RxList<String> fieldVar;
 
-  const MultiSelectDropdownField({
+  MultiSelectDropdownField({
     required this.icon,
     required this.hintText,
     required this.items,
@@ -20,11 +20,12 @@ class MultiSelectDropdownField extends StatelessWidget {
     required this.fieldVar,
     Key? key,
   }) : super(key: key);
+  final MultiSelectController multiSelectController = MultiSelectController();
 
   @override
   Widget build(BuildContext context) {
-    MultiSelectController multiSelectController = controller.multiSelectController;
-    List<ValueItem<String>> valueItems = items.map((item) => ValueItem(label: item, value: item)).toList();
+    List<ValueItem<String>> valueItems =
+        items.map((item) => ValueItem(label: item, value: item)).toList();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -51,13 +52,18 @@ class MultiSelectDropdownField extends StatelessWidget {
             controller: multiSelectController,
             // clearIcon: const Icon(Icons.reddit),
             onOptionSelected: (options) {
-              // debugPrint(options.toString());
-
+              fieldVar.clear();
+              fieldVar.refresh();
+              for (var element in options) {
+                fieldVar.add(element.value);
+              }
+              fieldVar.refresh();
             },
+
             options: valueItems,
             hint: hintText,
             hintColor: const Color(0xff7E7B7B),
-            hintFontSize : 12.sp,
+            hintFontSize: 12.sp,
             // maxItems: 2,
             // disabledOptions: const [ValueItem(label: 'Option 1', value: items[0])],
             selectionType: SelectionType.multi,
@@ -65,8 +71,8 @@ class MultiSelectDropdownField extends StatelessWidget {
             dropdownHeight: 300.h,
             optionTextStyle: TextStyle(fontSize: 12.sp),
             selectedOptionIcon: const Icon(Icons.check_circle),
-            focusedBorderColor : Colors.white,
-            borderColor : Colors.white,
+            focusedBorderColor: Colors.white,
+            borderColor: Colors.white,
           ),
         ),
       ],

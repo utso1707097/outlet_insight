@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../utils/custom_drawer.dart';
+import '../widgets/custom_drawer.dart';
 
 class QuestionairePage extends StatelessWidget {
   const QuestionairePage({super.key});

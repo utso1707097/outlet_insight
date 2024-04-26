@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:outlet_insight/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../pages/OutletPage.dart';
+import '../pages/outlet_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);

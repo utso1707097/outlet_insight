@@ -1,12 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
-
 class DashboardController extends GetxController {
   // Current user ID
-  final MultiSelectController multiSelectController = MultiSelectController();
 
   //RxString currentUserId = "".obs;
   RxString respondent = "".obs;
@@ -49,12 +49,10 @@ class DashboardController extends GetxController {
   final RxString brand4 = "".obs;
   final RxString brand5 = "".obs;
 
-
   // Rx variables for multiselect dropdown fields
 
   RxList<String> selectedHolidays = <String>[].obs;
   RxList<String> selectedCameraPlacementOptions = <String>[].obs;
-
 
   // RxString variables to hold base64 images
   RxString interiorBase64Image = ''.obs;
@@ -114,12 +112,11 @@ class DashboardController extends GetxController {
     super.onClose();
   }
 
-
   // Method to set interior base64 image
   void setInteriorBase64Image(String value) {
     interiorBase64Image.value = value;
     update();
-    print("Image saved as : ${interiorBase64Image.value}");
+    log("Image saved as : ${interiorBase64Image.value}");
   }
 
   // Method to set exterior base64 image
@@ -143,13 +140,18 @@ class DashboardController extends GetxController {
   // Method to upload images and details
   Future<void> uploadImagesAndDetails() async {
     // Concurrently upload all images
-    final interiorUpload = _uploadImage(interiorBase64Image.value, 'interior_image_upload_url');
-    final exteriorUpload = _uploadImage(exteriorBase64Image.value, 'exterior_image_upload_url');
-    final frontUpload = _uploadImage(frontBase64Image.value, 'front_image_upload_url');
-    final backUpload = _uploadImage(backBase64Image.value, 'back_image_upload_url');
+    final interiorUpload =
+        _uploadImage(interiorBase64Image.value, 'interior_image_upload_url');
+    final exteriorUpload =
+        _uploadImage(exteriorBase64Image.value, 'exterior_image_upload_url');
+    final frontUpload =
+        _uploadImage(frontBase64Image.value, 'front_image_upload_url');
+    final backUpload =
+        _uploadImage(backBase64Image.value, 'back_image_upload_url');
 
     // Wait for all uploads to complete
-    await Future.wait([interiorUpload, exteriorUpload, frontUpload, backUpload]);
+    await Future.wait(
+        [interiorUpload, exteriorUpload, frontUpload, backUpload]);
 
     // Upload details
     try {
@@ -159,9 +161,9 @@ class DashboardController extends GetxController {
           // Include other details here
         },
       );
-      print('Details Response: ${detailsResponse.statusCode}');
+      log('Details Response: ${detailsResponse.statusCode}');
     } catch (e) {
-      print('Error uploading details: $e');
+      log('Error uploading details: $e');
     }
   }
 
@@ -173,9 +175,9 @@ class DashboardController extends GetxController {
           Uri.parse(uploadUrl),
           body: {'image': base64Image},
         );
-        print('Upload Response: ${response.statusCode}');
+        log('Upload Response: ${response.statusCode}');
       } catch (e) {
-        print('Error uploading image: $e');
+        log('Error uploading image: $e');
       }
     }
   }
