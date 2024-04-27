@@ -84,7 +84,6 @@ class DashboardController extends GetxController {
   // Method to clear all image data
   void clearData() {
     // Clear all data
-    currentUserId.value = "";
     marketName.value = "";
     respondent.value = "";
     retailName.value = "";
@@ -149,6 +148,7 @@ class DashboardController extends GetxController {
         'PointOfContactName': pointOfContactName.value.toString(),
         'PointOfContactNumber': pointOfContactPhone.value.toString(),
         'AverageConsumerFootfallPerDay': averageFootfall.value.toString(),
+        'OwnerOfBkashTransactionNumber': whoseBkash.value.toString(),
         'OpenTime': openTime.value.toString(),
         'CloseTime': closeTime.value.toString(),
         'Top5Brands1': brand1.value.toString(),
@@ -188,7 +188,8 @@ class DashboardController extends GetxController {
         if (responseData['success'] == true) {
           // Handle success response
           print('Outlet information submitted successfully: ${responseData['message']}');
-          showCustomAlertDialog(context, 'Error', responseData['message']);
+          clearData();
+          showCustomAlertDialog(context, 'Success', responseData['message']);
 
         } else {
           // Handle failure response
@@ -209,9 +210,9 @@ class DashboardController extends GetxController {
 
   @override
   void onClose() {
-    // Dispose the form key when the controller is closed
-    clearData();
     super.onClose();
+    clearData();
+    currentUserId.value = "";
   }
 
   Future<void> fetchDataFromSession() async {

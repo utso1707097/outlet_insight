@@ -34,6 +34,13 @@ class _OutletPageState extends State<OutletPage> {
   }
 
   @override
+  void initState(){
+    super.initState();
+    controller.fetchDataFromSession();
+    controller.getCurrentLocation();
+  }
+
+  @override
   Widget build(BuildContext context) {
     log("rebuilding");
     return Scaffold(
@@ -320,7 +327,7 @@ class _OutletPageState extends State<OutletPage> {
                 SizedBox(height: 12.h),
                 CustomDropdownField(
                   icon: Icons.local_grocery_store,
-                  hintText: "Retail category",
+                  hintText: "Retail type",
                   items: const ["Grocery Shop", "Departmental Store", "other"],
                   controller: controller,
                   fieldVar: controller.retailType,
