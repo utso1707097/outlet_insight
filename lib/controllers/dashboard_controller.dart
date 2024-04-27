@@ -12,6 +12,8 @@ import 'package:outlet_insight/models/usermodel.dart';
 import 'package:outlet_insight/utils/custom_alert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/outlet_page.dart';
+
 class DashboardController extends GetxController {
   // Current user ID
 
@@ -197,21 +199,28 @@ class DashboardController extends GetxController {
           // Handle success response
           print('Outlet information submitted successfully: ${responseData['message']}');
           clearData();
+          update();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OutletPage(),
+            ),
+          );
           showCustomAlertDialog(context, 'Success', responseData['message']);
 
         } else {
           // Handle failure response
-          print('Failed to submit outlet information: ${responseData['message']}');
+          log('Failed to submit outlet information: ${responseData['message']}');
           showCustomAlertDialog(context, 'Error', responseData['message']);
         }
       } else {
         // Handle HTTP error
-        print('Failed to submit outlet information. Status code: ${response.statusCode}');
+        log('Failed to submit outlet information. Status code: ${response.statusCode}');
         showCustomAlertDialog(context, 'Error', 'Failed to submit outlet information. Status code: ${response.statusCode}');
       }
     } catch (error) {
       // Handle other errors
-      print('Error submitting outlet information: $error');
+      log('Error submitting outlet information: $error');
       showCustomAlertDialog(context, 'Error', 'Error submitting outlet information: $error');
     }
   }
