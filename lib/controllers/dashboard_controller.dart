@@ -51,6 +51,10 @@ class DashboardController extends GetxController {
   final RxString retailType = "".obs;
   final RxString premises = "".obs;
 
+  // Rx variables for other fields
+  final RxString respondantRelationWithRetail = "".obs;
+  final RxString availablePlacesToMountTheDisplayOther = "".obs;
+
   // Rx variables for location
   final RxString latitude = "".obs;
   final RxString longitude = "".obs;
@@ -119,8 +123,8 @@ class DashboardController extends GetxController {
     incentive_happiness.value = "";
     retailCategory.value = "";
     retailType.value = "";
-    premises.value = "";
-
+    respondantRelationWithRetail.value = "";
+    availablePlacesToMountTheDisplayOther.value = "";
     selectedHolidays.clear();
     selectedCameraPlacementOptions.clear();
 
@@ -137,6 +141,10 @@ class DashboardController extends GetxController {
       // Create the request body
       Map<String, String> requestBody = {
         'RetailName': retailName.value.toString(),
+        'HasTradeLicense': tradeAvailability.toString(),
+        'RespondentRelationWithRetailOther':respondantRelationWithRetail.value.toString(),
+        'AvailablePlacesToMountTheDisplayOther':availablePlacesToMountTheDisplayOther.value.toString(),
+        'RespondentName':respondent.value.toString(),
         'AddressStreet': street.value.toString(),
         'AddressCluster': cluster.value.toString(),
         'AddressArea': area.value.toString(),

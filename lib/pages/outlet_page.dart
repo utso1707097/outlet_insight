@@ -34,7 +34,7 @@ class _OutletPageState extends State<OutletPage> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     controller.fetchDataFromSession();
     controller.getCurrentLocation();
@@ -80,6 +80,23 @@ class _OutletPageState extends State<OutletPage> {
                   items: const ["owner", "employee", "other"],
                   controller: controller,
                   fieldVar: controller.relationshipWithRetail,
+                ),
+
+                Obx(
+                  () => controller.relationshipWithRetail.value == 'other'
+                      ? Column(
+                          children: [
+                            SizedBox(height: 12.h),
+                            CustomInputField(
+                              icon: Icons.bloodtype_outlined,
+                              hintText:
+                                  "Specify Respondent's relationship with retail",
+                              fieldVar: controller.respondantRelationWithRetail,
+                              inputType: TextInputType.text,
+                            ),
+                          ],
+                        )
+                      : const SizedBox.shrink(),
                 ),
                 SizedBox(height: 12.h),
                 CustomInputField(
@@ -257,10 +274,31 @@ class _OutletPageState extends State<OutletPage> {
                     "Back shelf",
                     "Right shelf",
                     "Left shelf",
-                    "Other (Please specify...)"
+                    "Other"
                   ],
                   controller: controller,
                   fieldVar: controller.selectedCameraPlacementOptions,
+                ),
+
+                Obx(
+                  () =>
+                      (controller.selectedCameraPlacementOptions.length == 1 &&
+                              controller.selectedCameraPlacementOptions
+                                  .contains('Other'))
+                          ? Column(
+                              children: [
+                                SizedBox(height: 12.h),
+                                CustomInputField(
+                                  icon: Icons.find_replace,
+                                  hintText:
+                                      "Specify What place is available to mount the display",
+                                  fieldVar: controller
+                                      .availablePlacesToMountTheDisplayOther,
+                                  inputType: TextInputType.text,
+                                )
+                              ],
+                            )
+                          : const SizedBox.shrink(),
                 ),
                 SizedBox(height: 12.h),
                 CustomDropdownField(

@@ -40,22 +40,24 @@ class CustomInputField extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
           ),
-          child: TextFormField(
-            onChanged: (text) {
-              // Update the fieldVar in the DashboardController
-              fieldVar.value = text;
-            },
-            initialValue: fieldVar.value.isEmpty ? null : fieldVar.value,
-            keyboardType: inputType,
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: TextStyle(
-                color: const Color(0xff7E7B7B),
-                fontSize: 12.sp,
+          child: Obx(
+           () => TextFormField(
+              onChanged: (text) {
+                // Update the fieldVar in the DashboardController
+                fieldVar.value = text;
+              },
+              initialValue: fieldVar.value.isEmpty ? null : fieldVar.value,
+              keyboardType: inputType,
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  color: const Color(0xff7E7B7B),
+                  fontSize: 12.sp,
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
               ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
             ),
           ),
         ),
