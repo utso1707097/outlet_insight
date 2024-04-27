@@ -56,6 +56,7 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
         GestureDetector(
           onTap: () async {
             final TimeOfDay? selectedTime = await showTimePicker(
+              helpText: "Enter ${widget.hintText}",
               initialTime: TimeOfDay.now(),
               initialEntryMode: TimePickerEntryMode.input,
               context: context,
@@ -77,8 +78,12 @@ class _CustomTimerPickerState extends State<CustomTimerPicker> {
             ),
             child: Text(
               widget.fieldVar.value == ""
-                  ? "Choose time"
+                  ? widget.hintText
                   : convertDateTime(widget.fieldVar.value),
+              style: TextStyle(
+                color: widget.fieldVar.value == "" ?const Color(0xff7E7B7B):Colors.black,
+                fontSize: 12.sp
+              ),
             ).paddingSymmetric(horizontal: 20.w),
           ),
         ),

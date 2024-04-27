@@ -25,6 +25,10 @@ class SharedPreferenceController extends GetxController {
       await initializePreferences();
     }
     await _sharedPreferences?.setString('user', jsonEncode(userModel.toJson()));
+    final currentUser = _sharedPreferences?.get('user') as String?;
+    if (currentUser != null) {
+      log(currentUser);
+    }
     user = userModel;
     authState = true;
     update();
@@ -58,6 +62,19 @@ class SharedPreferenceController extends GetxController {
     }
     log("Auth State = $authState");
     update();
+  }
+
+  Future<UserModel?> getCurrentUser() async {
+    if (_sharedPreferences == null) {
+      await initializePreferences();
+    }
+    log("Seinding data to dashboard....");
+    await initializeUserCache();
+    update();
+    if (user != null) {
+      return user;
+    }
+    return null;
   }
 
   Future<void> logout() async {

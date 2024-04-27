@@ -22,10 +22,11 @@ class OutletPage extends StatefulWidget {
 }
 
 class _OutletPageState extends State<OutletPage> {
-   GlobalKey<FormState> globalFormKey =
+  GlobalKey<FormState> globalFormKey =
       GlobalKey<FormState>(debugLabel: "dsfdsf");
 
   final DashboardController controller = Get.put(DashboardController());
+
   @override
   void dispose() {
     super.dispose();
@@ -78,6 +79,13 @@ class _OutletPageState extends State<OutletPage> {
                   icon: Icons.shop,
                   hintText: 'Retail name',
                   fieldVar: controller.retailName,
+                  inputType: TextInputType.text,
+                ),
+                SizedBox(height: 12.h),
+                CustomInputField(
+                  icon: Icons.storefront,
+                  hintText: 'Market name',
+                  fieldVar: controller.marketName,
                   inputType: TextInputType.text,
                 ),
                 SizedBox(height: 12.h),
@@ -204,12 +212,6 @@ class _OutletPageState extends State<OutletPage> {
                   fieldVar: controller.openTime,
                 ),
                 SizedBox(height: 12.h),
-                // CustomInputField(
-                //   icon: Icons.access_time_filled_rounded,
-                //   hintText: 'Close time',
-                //   fieldVar: controller.closeTime,
-                //   inputType: TextInputType.datetime,
-                // ),
                 CustomTimerPicker(
                   icon: Icons.access_time,
                   hintText: 'close time',
@@ -383,12 +385,11 @@ class _OutletPageState extends State<OutletPage> {
   }
 
   void inputLog(DashboardController controller) async {
-    controller.update();
-    // Future.delayed(Duration(seconds: 2));
     final List<String> logList = [
-      // "currentUserId: ${controller.currentUserId.value}",
+      "currentUserId: ${controller.currentUserId.value}",
       "respondent: ${controller.respondent.value}",
       "retailName: ${controller.retailName.value}",
+      "marketName: ${controller.marketName.value}",
       "street: ${controller.street.value}",
       "cluster: ${controller.cluster.value}",
       "area: ${controller.area.value}",
@@ -424,10 +425,14 @@ class _OutletPageState extends State<OutletPage> {
       "brand5: ${controller.brand5.value}",
       "holidays: ${controller.selectedHolidays.toString()}",
       "camera_positons_available: ${controller.selectedCameraPlacementOptions.toString()}",
+      "Latitude=${controller.latitude.toString()}",
+      "Longitude=${controller.longitude.toString()}",
+      "Accuracy=${controller.accuracy.toString()}",
     ];
 
     logList.forEach((message) {
       log(message);
     });
+    controller.submitOutletInformation(context);
   }
 }
