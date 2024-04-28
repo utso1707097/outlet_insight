@@ -134,6 +134,13 @@ class _OutletPageState extends State<OutletPage> {
                   inputType: TextInputType.streetAddress,
                 ),
                 SizedBox(height: 12.h),
+                CustomInputField(
+                  icon: Icons.public,
+                  hintText: 'Region',
+                  fieldVar: controller.region,
+                  inputType: TextInputType.streetAddress,
+                ),
+                SizedBox(height: 12.h),
                 CustomDropdownField(
                   icon: Icons.real_estate_agent_outlined,
                   hintText: "Partnership or single owner",
@@ -370,6 +377,26 @@ class _OutletPageState extends State<OutletPage> {
                   controller: controller,
                   fieldVar: controller.retailType,
                 ),
+
+                Obx(
+                      () =>
+                  (controller.retailType.value == 'other')
+                      ? Column(
+                    children: [
+                      SizedBox(height: 12.h),
+                      CustomInputField(
+                        icon: Icons.find_replace,
+                        hintText:
+                        "Specify the retail type",
+                        fieldVar: controller
+                            .retailTypeOther,
+                        inputType: TextInputType.text,
+                      )
+                    ],
+                  )
+                      : const SizedBox.shrink(),
+                ),
+
                 SizedBox(height: 12.h),
                 CustomDropdownField(
                   icon: Icons.workspace_premium_sharp,
@@ -381,25 +408,19 @@ class _OutletPageState extends State<OutletPage> {
                 SizedBox(height: 10.h),
                 ImageSelector(
                   icon: Icons.photo,
-                  hintText: 'Select outlet interior image',
+                  hintText: 'Take photo of the retail from outside',
+                  fieldVar: controller.backBase64Image,
+                ),
+                ImageSelector(
+                  icon: Icons.photo,
+                  hintText: 'Capture Potential Display Mounting Spots',
                   fieldVar: controller.interiorBase64Image,
                 ),
                 //SizedBox(height: 10.h),
                 ImageSelector(
                   icon: Icons.photo,
-                  hintText: 'Select outlet exterior image',
-                  fieldVar: controller.exteriorBase64Image,
-                ),
-                //SizedBox(height: 10.h),
-                ImageSelector(
-                  icon: Icons.photo,
-                  hintText: 'Select outlet front image',
+                  hintText: 'Capture Display Mounting Locations',
                   fieldVar: controller.frontBase64Image,
-                ),
-                ImageSelector(
-                  icon: Icons.photo,
-                  hintText: 'Select outlet back image',
-                  fieldVar: controller.backBase64Image,
                 ),
                 SizedBox(height: 10.h),
                 Container(
@@ -438,6 +459,7 @@ class _OutletPageState extends State<OutletPage> {
       "street: ${controller.street.value}",
       "cluster: ${controller.cluster.value}",
       "area: ${controller.area.value}",
+      "region: ${controller.region.value}",
       "owner: ${controller.owner.value}",
       "phone1: ${controller.phone1.value}",
       "phone2: ${controller.phone2.value}",

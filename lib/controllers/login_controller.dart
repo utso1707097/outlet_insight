@@ -9,6 +9,8 @@ import 'package:outlet_insight/models/usermodel.dart';
 import 'package:outlet_insight/pages/outlet_page.dart';
 import 'package:outlet_insight/utils/custom_alert_dialog.dart';
 
+import '../utils/custom_loading_indicator.dart';
+
 class LoginController extends GetxController {
   // Instantiate TextFieldController
   TextEditingController nameController = TextEditingController();
@@ -38,7 +40,18 @@ class LoginController extends GetxController {
 
       request.fields['LoginId'] = username;
       request.fields['LoginPassword'] = password;
-
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: Center(
+              child: CustomLoadingIndicator(), // Assuming CustomLoadingIndicator is your custom loading widget
+            ),
+          );
+        },
+      );
       var response = await http.Response.fromStream(await request.send());
       var jsonResponse = json.decode(response.body);
 
@@ -50,6 +63,7 @@ class LoginController extends GetxController {
           await _cache.saveUserInformation(user);
           nameController.clear();
           passwordController.clear();
+          Navigator.pop(context);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -58,6 +72,7 @@ class LoginController extends GetxController {
           );
         } else {
           log("${response.statusCode} ${response.body}");
+          Navigator.pop(context);
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -69,6 +84,7 @@ class LoginController extends GetxController {
           );
         }
       } else {
+        Navigator.pop(context);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -80,6 +96,7 @@ class LoginController extends GetxController {
       }
     } catch (error) {
       log('Error: $error');
+      Navigator.pop(context);
       showDialog(
         context: context,
         builder: (BuildContext context) {
