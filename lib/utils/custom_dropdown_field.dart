@@ -40,7 +40,7 @@ class CustomDropdownField extends StatelessWidget {
         SizedBox(width: 10.w),
         Container(
           width: 259.w,
-          height: 48.h,
+          height: 55.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
@@ -70,6 +70,7 @@ class CustomDropdownField extends StatelessWidget {
                           // color: const Color(0xff7E7B7B),
                         ),
                         overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                     ),
                   ],
@@ -95,7 +96,7 @@ class CustomDropdownField extends StatelessWidget {
                 buttonStyleData: ButtonStyleData(
                   height: 48.h,
                   width: 259.w,
-                  padding: EdgeInsets.only(left: 14.w, right: 14.w),
+                  padding: EdgeInsets.only(left: 16.w, right: 14.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.w),
                     // border: Border.all(

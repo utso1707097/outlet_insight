@@ -190,10 +190,10 @@ class _CameraPageWithGalleryState extends State<CameraPageWithGallery> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.photo, color: Colors.white),
-              onPressed: () async {
-                await _pickImageFromGallery();
-                setState(() {});
+              icon: const Icon(Icons.cancel_outlined, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+                // setState(() {});
               },
             ),
             IconButton(

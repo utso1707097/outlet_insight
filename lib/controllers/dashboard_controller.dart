@@ -92,6 +92,8 @@ class DashboardController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    await fetchDataFromSession();
+    await getCurrentLocation();
     await fetchAppVersion();
     if (appVersion.value!="" && currentUserId.value != "") {
       print("called");

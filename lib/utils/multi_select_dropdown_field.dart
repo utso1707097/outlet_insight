@@ -41,15 +41,17 @@ class MultiSelectDropdownField extends StatelessWidget {
         ),
         SizedBox(width: 10.w),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
           width: 259.w,
-          height: 48.h,
+          height: 55.h,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(40.w),
           ),
           child: MultiSelectDropDown(
             controller: multiSelectController,
+            inputDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.w),
+            ),
             // clearIcon: const Icon(Icons.reddit),
             onOptionSelected: (options) {
               fieldVar.clear();

@@ -35,7 +35,7 @@ class CustomInputField extends StatelessWidget {
         SizedBox(width: 10.w),
         Container(
           width: 259.w,
-          height: 48.h,
+          height: 55.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
@@ -56,6 +56,7 @@ class CustomInputField extends StatelessWidget {
                   color: const Color(0xff7E7B7B),
                   fontSize: 12.sp,
                 ),
+                hintMaxLines: 2,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
               ),
             ),
