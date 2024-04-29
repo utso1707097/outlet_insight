@@ -68,6 +68,7 @@ class CustomDrawer extends StatelessWidget {
               // Navigate to see entered outlet page
               SharedPreferenceController cache = Get.find();
               log(cache.user?.userId ?? "");
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => EnteredOutletPage(userId: cache.user?.userId ?? "")),

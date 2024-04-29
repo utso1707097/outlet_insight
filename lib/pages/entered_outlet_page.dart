@@ -30,7 +30,7 @@ class EnteredOutletPage extends StatelessWidget {
       ),
       drawer: const CustomDrawer(),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: fetchEnteredOutlets(context,userId),
+        future: fetchEnteredOutlets(context, userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CustomLoadingIndicator());
@@ -54,15 +54,24 @@ class EnteredOutletPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async{
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomLoadingIndicator();
+                          },
+                        );
+                        final outletData = await fetchSelectedOutlet(context, userId, outlet['id']);
+                        Navigator.pop(context);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ShowOutletPage(outletData: outlet)),
+                          MaterialPageRoute(builder: (context) =>
+                              ShowOutletPage(outletData: outletData)),
                         );
                       },
                       child: ListTile(
                         title: Text(
-                          outlet['name'],
+                          outlet['name'] ?? '',
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
@@ -73,18 +82,22 @@ class EnteredOutletPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              outlet['owner_name'] ?? '', // Adding ?? '' to handle null values
+                              outlet['owner_name'] ?? '',
+                              // Adding ?? '' to handle null values
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Colors.white70.withOpacity(0.8), // Subtitle text color
+                                color: Colors.white70.withOpacity(
+                                    0.8), // Subtitle text color
                               ),
                             ),
                             SizedBox(height: 5.h,),
                             Text(
-                              outlet['owner_contact_number_1'] ?? '', // Adding ?? '' to handle null values
+                              outlet['owner_contact_number_1'] ?? '',
+                              // Adding ?? '' to handle null values
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Colors.white70.withOpacity(0.8), // Subtitle text color
+                                color: Colors.white70.withOpacity(
+                                    0.8), // Subtitle text color
                               ),
                             ),
                           ],
@@ -93,7 +106,8 @@ class EnteredOutletPage extends StatelessWidget {
                           width: 70.w,
                           height: 70.h,
                           decoration: const BoxDecoration(
-                            color: Colors.red, // Background color of leading icon
+                            color: Colors.red,
+                            // Background color of leading icon
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -101,7 +115,8 @@ class EnteredOutletPage extends StatelessWidget {
                               outlet['name'].substring(0, 1).toUpperCase(),
                               style: TextStyle(
                                 fontSize: 20.sp,
-                                color: Colors.white, // Color of leading icon text
+                                color: Colors
+                                    .white, // Color of leading icon text
                               ),
                             ),
                           ),
@@ -122,7 +137,8 @@ class EnteredOutletPage extends StatelessWidget {
     );
   }
 
-  Future<List<Map<String, dynamic>>> fetchEnteredOutlets(BuildContext context,String userId) async {
+  Future<List<Map<String, dynamic>>> fetchEnteredOutlets(BuildContext context,
+      String userId) async {
     try {
       // Your API endpoint for leave applications
       final String leaveApplicationsUrl =
@@ -148,7 +164,8 @@ class EnteredOutletPage extends StatelessWidget {
         final Map<String, dynamic> responseData = json.decode(response.body);
         print('Response data: $responseData');
 
-        if (responseData.containsKey('outletResult') && responseData['outletResult'] != null) {
+        if (responseData.containsKey('outletResult') &&
+            responseData['outletResult'] != null) {
           List<Map<String, dynamic>> outletList =
           (responseData['outletResult'] as List<dynamic>)
               .map((item) => Map<String, dynamic>.from(item))
@@ -171,13 +188,14 @@ class EnteredOutletPage extends StatelessWidget {
         }
       } else {
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CustomAlertDialog(
-                  title: "Error",
-                  message: "Failed to load Outlet List. Status code: ${response.statusCode}",
-              );
-            },
+          context: context,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+              title: "Error",
+              message: "Failed to load Outlet List. Status code: ${response
+                  .statusCode}",
+            );
+          },
         );
         return [];
       }
@@ -194,4 +212,73 @@ class EnteredOutletPage extends StatelessWidget {
       return [];
     }
   }
+
+  Future<Map<String, dynamic>> fetchSelectedOutlet(BuildContext context, String userId, String outletId) async {
+    try {
+      // Your API endpoint for leave applications
+      final String leaveApplicationsUrl = 'http://retail.isgalleon.com/api/outlet/get_outlet.php';
+      final Uri uri = Uri.parse(leaveApplicationsUrl);
+
+      final map = <String, dynamic>{};
+      // Assuming you have SharedPreferences initialized
+      map['UserId'] = userId;
+      map['ResponseType'] = "list";
+      map['TargetUserId'] = userId;
+      map['OutletId'] = outletId;
+
+      final http.Response response = await http.post(
+        uri,
+        body: map,
+      );
+
+      print("Request data: $map");
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        print('Response data: $responseData');
+
+        if (responseData.containsKey('outletResult') && responseData['outletResult'] != null) {
+          Map<String, dynamic> outletData = Map<String, dynamic>.from(responseData['outletResult']);
+          return outletData;
+        } else {
+          // Handle case where 'outletResult' is null or not present
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomAlertDialog(
+                title: "Error",
+                message: "Failed to load outlet data. 'outletResult' is null or not present in the response.",
+              );
+            },
+          );
+          return {};
+        }
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(
+              title: "Error",
+              message: "Failed to load Outlet data. Status code: ${response.statusCode}",
+            );
+          },
+        );
+        return {};
+      }
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(
+            title: "Error",
+            message: "Error loading outlet data: $error",
+          );
+        },
+      );
+      return {};
+    }
+  }
+
 }
