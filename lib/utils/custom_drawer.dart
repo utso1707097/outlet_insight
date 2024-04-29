@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:outlet_insight/controllers/shared_preference_controller.dart';
 import 'package:outlet_insight/main.dart';
+import 'package:outlet_insight/pages/entered_outlet_page.dart';
 import 'package:outlet_insight/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,6 +66,13 @@ class CustomDrawer extends StatelessWidget {
             ),
             onTap: () {
               // Navigate to see entered outlet page
+              SharedPreferenceController cache = Get.find();
+              log(cache.user?.userId ?? "");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EnteredOutletPage(userId: cache.user?.userId ?? "")),
+              );
+
             },
           ),
           ListTile(
@@ -78,7 +88,6 @@ class CustomDrawer extends StatelessWidget {
               SharedPreferenceController cache = Get.find();
               await cache.logout();
               navigatorKey.currentState!.pop();
-              Future.delayed(Duration(seconds: 2));
               navigatorKey.currentState!.pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => LoginPage(),
