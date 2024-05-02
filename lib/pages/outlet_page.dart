@@ -77,6 +77,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Enter Respondent\'s name',
                     fieldVar: controller.respondent,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -85,6 +86,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["owner", "employee", "other"],
                     controller: controller,
                     fieldVar: controller.relationshipWithRetail,
+                    isRequired: true,
                   ),
         
                   Obx(
@@ -109,6 +111,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Retail name',
                     fieldVar: controller.retailName,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -116,6 +119,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Market name',
                     fieldVar: controller.marketName,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -123,6 +127,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Street',
                     fieldVar: controller.street,
                     inputType: TextInputType.streetAddress,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -130,6 +135,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Cluster',
                     fieldVar: controller.cluster,
                     inputType: TextInputType.streetAddress,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -137,6 +143,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Area',
                     fieldVar: controller.area,
                     inputType: TextInputType.streetAddress,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -144,6 +151,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Region',
                     fieldVar: controller.region,
                     inputType: TextInputType.streetAddress,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -152,6 +160,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["Single owner", "Partnership"],
                     controller: controller,
                     fieldVar: controller.ownershipType,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -159,6 +168,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Owner\'s name',
                     fieldVar: controller.owner,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -166,6 +176,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Owner\'s contact number 1',
                     fieldVar: controller.phone1,
                     inputType: TextInputType.phone,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -180,6 +191,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Owner\'s bkash account number',
                     fieldVar: controller.bkash,
                     inputType: TextInputType.phone,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -187,6 +199,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Point of contact\'s name',
                     fieldVar: controller.pointOfContactName,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -194,15 +207,17 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Point of contact\'s phone number',
                     fieldVar: controller.pointOfContactPhone,
                     inputType: TextInputType.phone,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
                     icon: Icons.question_mark,
                     hintText:
-                        "Who's bkash number shall be used to transfer incentives",
+                        "Who's bkash number shall be used to transfer incentives?",
                     items: const ["Owner’sr", "Point of contact"],
                     controller: controller,
                     fieldVar: controller.whoseBkash,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -211,6 +226,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["Yes", "No"],
                     controller: controller,
                     fieldVar: controller.tradeAvailability,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -218,6 +234,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Average consumer footfall/day',
                     fieldVar: controller.averageFootfall,
                     inputType: TextInputType.number,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   MultiSelectDropdownField(
@@ -234,6 +251,7 @@ class _OutletPageState extends State<OutletPage> {
                     ],
                     controller: controller,
                     fieldVar: controller.selectedHolidays,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   // CustomInputField(
@@ -262,6 +280,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["Yes", "No"],
                     controller: controller,
                     fieldVar: controller.internetAvailability,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -270,6 +289,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["Yes", "No"],
                     controller: controller,
                     fieldVar: controller.cctvAvailability,
+                    isRequired: true,
                   ),
         
                   // If yes, where is the monitor placed
@@ -290,6 +310,7 @@ class _OutletPageState extends State<OutletPage> {
                     ],
                     controller: controller,
                     fieldVar: controller.selectedCameraPlacementOptions,
+                    isRequired: true,
                   ),
         
                   Obx(
@@ -319,6 +340,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["yes", "no"],
                     controller: controller,
                     fieldVar: controller.cctvPlacement,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -327,6 +349,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["yes", "no"],
                     controller: controller,
                     fieldVar: controller.cctvEyeLevel,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -336,6 +359,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["yes", "no"],
                     controller: controller,
                     fieldVar: controller.incentive_happiness,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -351,6 +375,7 @@ class _OutletPageState extends State<OutletPage> {
                         'What is the largest amount of incentive he gets from promotional installation?',
                     fieldVar: controller.largestIncentive,
                     inputType: TextInputType.number,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -358,6 +383,7 @@ class _OutletPageState extends State<OutletPage> {
                     hintText: 'Who is the client?',
                     fieldVar: controller.client,
                     inputType: TextInputType.text,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomInputField(
@@ -373,6 +399,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["A", "B", "C"],
                     controller: controller,
                     fieldVar: controller.retailCategory,
+                    isRequired: true,
                   ),
                   SizedBox(height: 12.h),
                   CustomDropdownField(
@@ -381,6 +408,7 @@ class _OutletPageState extends State<OutletPage> {
                     items: const ["Grocery Shop", "Departmental Store", "other"],
                     controller: controller,
                     fieldVar: controller.retailType,
+                    isRequired: true,
                   ),
         
                   Obx(
@@ -406,25 +434,28 @@ class _OutletPageState extends State<OutletPage> {
                   CustomDropdownField(
                     icon: Icons.workspace_premium_sharp,
                     hintText: "Premises",
-                    items: const ["Wet Market", "Market 3", "Standalone"],
+                    items: const ["Wet Market", "Market 3", "Standalone"
+                      "Office","College","Factory","Bazar","Market","Entertainment Zone",
+                      "Vibrant Residential Area"],
                     controller: controller,
                     fieldVar: controller.premises,
+                    isRequired: true,
                   ),
                   SizedBox(height: 10.h),
                   ImageSelector(
                     icon: Icons.photo,
-                    hintText: 'Take photo of the retail from outside',
+                    hintText: 'Take photo of the retail from outside (required)',
                     fieldVar: controller.backBase64Image,
                   ),
                   ImageSelector(
                     icon: Icons.photo,
-                    hintText: 'Capture Potential Display Mounting Spots',
+                    hintText: 'Capture Potential Display Mounting Spots (required)',
                     fieldVar: controller.interiorBase64Image,
                   ),
                   //SizedBox(height: 10.h),
                   ImageSelector(
                     icon: Icons.photo,
-                    hintText: 'Capture Display Mounting Locations',
+                    hintText: 'Capture Display Mounting Locations (required)',
                     fieldVar: controller.frontBase64Image,
                   ),
                   SizedBox(height: 10.h),

@@ -278,6 +278,7 @@ class DashboardController extends GetxController {
     retailTypeOther.value = "";
     selectedHolidays.clear();
     selectedCameraPlacementOptions.clear();
+    premises.value = "";
 
     interiorBase64Image.value = '';
     exteriorBase64Image.value = '';
@@ -285,7 +286,83 @@ class DashboardController extends GetxController {
     backBase64Image.value = '';
   }
 
+  bool validateFields(BuildContext context) {
+    // List of required fields
+    final List<Map<String, String>> requiredFields = [
+      {'value': respondent.value, 'fieldName': 'Respondent Name'},
+      {'value': respondantRelationWithRetail.value,'fieldName':'Respondant Relationship with Retail'},
+      {'value': retailName.value, 'fieldName': 'Retail Name'},
+      {'value': marketName.value, 'fieldName': 'Market Name'},
+      {'value': street.value, 'fieldName': 'Street Address'},
+      {'value': cluster.value, 'fieldName': 'Cluster'},
+      {'value': region.value, 'fieldName': 'Region'},
+      {'value': area.value, 'fieldName': 'Area'},
+      {'value': owner.value, 'fieldName': 'Owner Name'},
+      {'value': ownershipType.value, 'fieldName': 'Ownership Type'},
+      {'value': phone1.value, 'fieldName': 'Phone 1'},
+      {'value': bkash.value, 'fieldName': 'Owner\'s Bkash Number'},
+      {'value': pointOfContactName.value, 'fieldName': 'Point of Contact Name'},
+      {'value': pointOfContactPhone.value, 'fieldName': 'Point of Contact Phone'},
+      {'value': averageFootfall.value, 'fieldName': 'Average Footfall'},
+      {'value': openTime.value, 'fieldName': 'Opening Time'},
+      {'value': closeTime.value, 'fieldName': 'Closing Time'},
+      {'value': amountDemand.value, 'fieldName': 'Amount Demand'},
+      {'value': largestIncentive.value, 'fieldName': 'Largest Incentive'},
+      {'value': client.value, 'fieldName': 'Client'},
+      {'value': retailCategory.value, 'fieldName': 'Retail Category'},
+      {'value': retailType.value, 'fieldName': 'Retail Type'},
+      {'value': premises.value, 'fieldName': 'Premises'},
+      {'value': marketName.value, 'fieldName': 'Market Name'},
+      {'value': tradeAvailability.value, 'fieldName': 'Trade Availability'},
+      {'value': whoseBkash.value, 'fieldName': 'Whose Bkash'},
+      {'value': internetAvailability.value, 'fieldName': 'Internet Availability'},
+      {'value': cctvAvailability.value, 'fieldName': 'CCTV Availability'},
+      {'value': cctvEyeLevel.value, 'fieldName': 'CCTV Eye Level'},
+      {'value': cctvPlacement.value, 'fieldName': 'CCTV Placement'},
+      {'value': incentive_happiness.value, 'fieldName': 'Incentive Happiness'},
+      {'value': retailCategory.value, 'fieldName': 'Retail Category'},
+      {'value': interiorBase64Image.value, 'fieldName': 'Interior Base64 Image'},
+      {'value': frontBase64Image.value, 'fieldName': 'Front Base64 Image'},
+      {'value': backBase64Image.value, 'fieldName': 'Back Base64 Image'},
+    ];
+
+
+    // Check for empty required fields
+    for (var field in requiredFields) {
+      if (field['value']?.isEmpty ?? true) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomAlertDialog(title: 'Error', message: '${field['fieldName']} is required.');
+          },
+        );
+        return false;
+      }
+    }
+
+    // Check if at least one brand is provided
+    if (brand1.value.isEmpty &&
+        brand2.value.isEmpty &&
+        brand3.value.isEmpty &&
+        brand4.value.isEmpty &&
+        brand5.value.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(title: 'Error', message: 'At least one brand is required in Top 5 Brands.');
+        },
+      );
+      return false;
+    }
+
+    // If all required fields are filled, return true
+    return true;
+  }
+
   void submitOutletInformation(BuildContext context) async {
+    if (!validateFields(context)) {
+      return;
+    }
     try {
       final String apiUrl =
           'http://retail.isgalleon.com/api/outlet/insert_outlet.php';

@@ -11,6 +11,7 @@ class MultiSelectDropdownField extends StatelessWidget {
   final List<String> items;
   final DashboardController controller;
   final RxList<String> fieldVar;
+  final bool isRequired;
 
   MultiSelectDropdownField({
     required this.icon,
@@ -18,6 +19,7 @@ class MultiSelectDropdownField extends StatelessWidget {
     required this.items,
     required this.controller,
     required this.fieldVar,
+    this.isRequired = false,
     Key? key,
   }) : super(key: key);
   final MultiSelectController multiSelectController = MultiSelectController();
@@ -42,7 +44,6 @@ class MultiSelectDropdownField extends StatelessWidget {
         SizedBox(width: 10.w),
         Container(
           width: 259.w,
-          height: 55.h,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(40.w),
@@ -61,11 +62,13 @@ class MultiSelectDropdownField extends StatelessWidget {
               }
               fieldVar.refresh();
             },
-
             options: valueItems,
-            hint: hintText,
+            hint: '$hintText (required)',
             hintColor: const Color(0xff7E7B7B),
             hintFontSize: 12.sp,
+            // suffixIcon: isRequired && fieldVar.value.isEmpty
+            //     ? Icon(Icons.star, color: Colors.red, size: 8.sp)
+            //     : Icon(Icons.star, color: Colors.red, size: 0.sp),
             // maxItems: 2,
             // disabledOptions: const [ValueItem(label: 'Option 1', value: items[0])],
             selectionType: SelectionType.multi,

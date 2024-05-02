@@ -10,7 +10,8 @@ class CustomDropdownField extends StatelessWidget {
   final List<String> items;
   final DashboardController controller;
   final RxString fieldVar;
-  final String? selectedValue; // Assuming you have a selected value variable
+  final String? selectedValue;
+  final bool isRequired;
 
   const CustomDropdownField({
     Key? key,
@@ -20,10 +21,16 @@ class CustomDropdownField extends StatelessWidget {
     required this.controller,
     required this.fieldVar,
     this.selectedValue,
+    this.isRequired = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final suffixIcon = isRequired && fieldVar.value.isEmpty
+        ? Container(
+      child: Icon(Icons.star, color: Colors.red, size: 8.sp),
+    )
+        : null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -40,7 +47,6 @@ class CustomDropdownField extends StatelessWidget {
         SizedBox(width: 10.w),
         Container(
           width: 259.w,
-          height: 55.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24.w),
             color: Colors.white,
@@ -70,9 +76,10 @@ class CustomDropdownField extends StatelessWidget {
                           // color: const Color(0xff7E7B7B),
                         ),
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                        maxLines: 3,
                       ),
                     ),
+                    if (suffixIcon != null) suffixIcon,
                   ],
                 ),
                 items: items
